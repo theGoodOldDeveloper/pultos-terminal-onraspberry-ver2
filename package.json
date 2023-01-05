@@ -1,0 +1,28 @@
+{
+  "name": "pultos-terminal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "photovegh",
+  "license": "MIT",
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "body-parser": "^1.19.2",
+    "bootstrap": "^4.6.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "i": "^0.3.7",
+    "mysql": "^2.18.1",
+    "node-cron": "^3.0.2",
+    "nodemailer": "^6.7.8",
+    "npm": "^8.12.2",
+    "to": "^0.2.9",
+    "update": "^0.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

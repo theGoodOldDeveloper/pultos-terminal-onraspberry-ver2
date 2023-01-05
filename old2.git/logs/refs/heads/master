@@ -1,0 +1,44 @@
+0000000000000000000000000000000000000000 c3ce51a377c57bc78182e91200634fb534dacfd1 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1663585481 +0200	commit (initial): new rewpo modify apiKey
+c3ce51a377c57bc78182e91200634fb534dacfd1 8becb14ed6cabb6b05f3f428735e85acddc35eeb Tibor Végh <73848390+photovegh@users.noreply.github.com> 1663596083 +0200	commit: sendGrid emilSender apiKey OK
+8becb14ed6cabb6b05f3f428735e85acddc35eeb efd188eb1b4ead8384f1afce795752748bde67b3 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1664118211 +0200	commit: heti jelentees OK
+efd188eb1b4ead8384f1afce795752748bde67b3 7b33eafcbacfed771dd9da9ca040213e6e024121 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1664269777 +0200	commit: pultos admin .json => .txt atalakitasnal a server.js, server-leltar.js nem let atirva
+7b33eafcbacfed771dd9da9ca040213e6e024121 444a5053ef01f7a2d723f739dcc85baa9a55969a Tibor Végh <73848390+photovegh@users.noreply.github.com> 1664367474 +0200	commit: pult oldal-valaszto OK
+444a5053ef01f7a2d723f739dcc85baa9a55969a 4b9a92261e4eafb4be75545f1ee147fc3ebd5133 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1664481260 +0200	commit: gyakorlatilag OK, meg nehany sallang
+4b9a92261e4eafb4be75545f1ee147fc3ebd5133 100cead538c287bf0cdedaead681c245dc5a7586 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1664828978 +0200	commit: statistics tabl head right OK, pult BTN design, page reset OK,visibleOrder alert return
+100cead538c287bf0cdedaead681c245dc5a7586 83c6bf4978c8c259a6025114ba75cedf3fdf7f64 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1665044087 +0200	commit: termekoldal reset() off
+83c6bf4978c8c259a6025114ba75cedf3fdf7f64 ee1ea5bf11b0a3a5ba03f6bd68c0e5ba07f92337 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1665045440 +0200	commit: ures kosar torlees alert off
+ee1ea5bf11b0a3a5ba03f6bd68c0e5ba07f92337 da8fec8ac1dd580bec9fc7b10f647753b48041b1 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1665089680 +0200	commit: backup kosarak save ok
+da8fec8ac1dd580bec9fc7b10f647753b48041b1 2897c0c1fa3bf8fa8cd63454b5b416d12851bcdb Tibor Végh <73848390+photovegh@users.noreply.github.com> 1665520611 +0200	commit: pult sumcl nem state -> gonygyolit - backspace - valodi keszlet + pultban
+2897c0c1fa3bf8fa8cd63454b5b416d12851bcdb d8dd29d3883691ce2b74e3219e582df538ae6554 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1665870659 +0200	commit: leltar raktarkeszlet ... visibleorder OK
+d8dd29d3883691ce2b74e3219e582df538ae6554 d182b43c553bb2ffc97005c119e35c4fd6b5c1f3 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1665947725 +0200	commit: admin top menu, fix top menu ... ok
+d182b43c553bb2ffc97005c119e35c4fd6b5c1f3 2b86d03e35cdc8100690c051216b2b97bcffc949 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1666554747 +0200	commit: oteves terv OK
+2b86d03e35cdc8100690c051216b2b97bcffc949 492d37ec27da7e355f444ef3495cb0aa4b62eb24 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1666638337 +0200	commit: saldo kp2 OK
+492d37ec27da7e355f444ef3495cb0aa4b62eb24 5a7edadce65cf53bb8dbdad5b33b5beec108d41d Tibor Végh <73848390+photovegh@users.noreply.github.com> 1666813548 +0200	commit: Havi, napi kritikus jelentes OK
+5a7edadce65cf53bb8dbdad5b33b5beec108d41d 64a21360129f1e9e1873a0bd05908eeafb351af0 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1667166907 +0100	commit: FINAL APP OK 221030
+64a21360129f1e9e1873a0bd05908eeafb351af0 98921d4c9538197a4143cdbc8622cfdf04455c75 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1667422530 +0100	commit: FINAL APP modify
+98921d4c9538197a4143cdbc8622cfdf04455c75 a92508111a33319d64f5821eeb86dbd89a75ac6a Tibor Végh <73848390+photovegh@users.noreply.github.com> 1667573446 +0100	commit: termekek percent OK
+a92508111a33319d64f5821eeb86dbd89a75ac6a c96ea6fd97b48feea1e89d1054efa1e3181936ea Tibor Végh <73848390+photovegh@users.noreply.github.com> 1667856508 +0100	commit: Ures kritikus message OK
+c96ea6fd97b48feea1e89d1054efa1e3181936ea 584529ce24b088162bd4b41de9636e1bf0517950 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1668029203 +0100	commit: messenger hibajavitasok OK, orankenti forgalom
+584529ce24b088162bd4b41de9636e1bf0517950 9c700e7feabbe3d7b7cb637f11fb8219422da684 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1668372516 +0100	commit: hourly trafic separate OK
+9c700e7feabbe3d7b7cb637f11fb8219422da684 7077c064f5d6117f5c1675a994faa6e27e5dc69f Tibor Végh <73848390+photovegh@users.noreply.github.com> 1669236940 +0100	commit: termekView OK
+7077c064f5d6117f5c1675a994faa6e27e5dc69f defd80825cc5c7e0b3db4fabd128dd3892fbd1a3 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1669311963 +0100	commit: keszletWiev okj
+defd80825cc5c7e0b3db4fabd128dd3892fbd1a3 ec7c8051aabc185b82be9b1e921b3ebfaaf13edc Tibor Végh <73848390+photovegh@users.noreply.github.com> 1669368584 +0100	commit: Admin alapanyagnoveles beszerzes reload database ok
+ec7c8051aabc185b82be9b1e921b3ebfaaf13edc b7411e9d5d0920628538accb9d9966535a4a13bf Tibor Végh <73848390+photovegh@users.noreply.github.com> 1669369168 +0100	commit: minus 1 variable
+b7411e9d5d0920628538accb9d9966535a4a13bf f77f593588d9d369b5d540184b28fb6624c2dcb9 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1669670088 +0100	commit: todolist setup - cashFlow insert
+f77f593588d9d369b5d540184b28fb6624c2dcb9 6f6f50bd37d21976ec33e70fa71655293ce4c80e Tibor Végh <73848390+photovegh@users.noreply.github.com> 1669927727 +0100	commit: server leltar 2 emilre
+6f6f50bd37d21976ec33e70fa71655293ce4c80e 4bff7046021b8a39f757cde011ac629d22e6119d Tibor Végh <73848390+photovegh@users.noreply.github.com> 1669928876 +0100	commit: double emilsend repair 😋
+4bff7046021b8a39f757cde011ac629d22e6119d 2ce0506d0cf573c420b8e842c4e898f67036910a Tibor Végh <73848390+photovegh@users.noreply.github.com> 1670446245 +0100	commit: final cut 😋
+2ce0506d0cf573c420b8e842c4e898f67036910a b9a1c1250e503fd24a0b8f72cf899c5012086d57 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1670537833 +0100	commit: FINAL CAT 2
+b9a1c1250e503fd24a0b8f72cf899c5012086d57 c1f434c22d111329eafff227e69ae26d0429a6be Tibor Végh <73848390+photovegh@users.noreply.github.com> 1670538251 +0100	commit: final cut 2/a
+c1f434c22d111329eafff227e69ae26d0429a6be d5c20c4668efbd1204bbc02a55a1db98e3b81295 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1670618650 +0100	commit: Final Cut 😁
+d5c20c4668efbd1204bbc02a55a1db98e3b81295 8687ef36f929cb89032f56df2d971568fa54b70e Tibor Végh <73848390+photovegh@users.noreply.github.com> 1670800881 +0100	commit: FINAL CUT rep worktime
+8687ef36f929cb89032f56df2d971568fa54b70e a6b844476cebb395712ca738a003f8285050b685 Tibor Végh <73848390+photovegh@users.noreply.github.com> 1670844146 +0100	commit: nincsJelentooseege
+a6b844476cebb395712ca738a003f8285050b685 e622487a793ea5001bce5d0398cc0a6c31146b4c Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672933254 +0100	commit: pultosDay value not definied corrected 😋
+e622487a793ea5001bce5d0398cc0a6c31146b4c a6b844476cebb395712ca738a003f8285050b685 Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672933727 +0100	reset: moving to HEAD~
+a6b844476cebb395712ca738a003f8285050b685 887798d2adb05e3e85cafae0c42b954af9b54f3e Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672933788 +0100	commit: pultosDay value not definied corrected 😋
+887798d2adb05e3e85cafae0c42b954af9b54f3e a6b844476cebb395712ca738a003f8285050b685 Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672933816 +0100	reset: moving to HEAD~
+a6b844476cebb395712ca738a003f8285050b685 899ae2dacb6fc371592104eaa6e07ee71bc4cfb7 Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672933851 +0100	commit: pultosDay value not definied corrected 😋
+899ae2dacb6fc371592104eaa6e07ee71bc4cfb7 a6b844476cebb395712ca738a003f8285050b685 Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672933892 +0100	reset: moving to HEAD~
+a6b844476cebb395712ca738a003f8285050b685 ebb9bb7b212be48c5598be9a7c247c26dfbc8be9 Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672933905 +0100	commit: pultosDay value not definied corrected 😋
+ebb9bb7b212be48c5598be9a7c247c26dfbc8be9 a6b844476cebb395712ca738a003f8285050b685 Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672934049 +0100	reset: moving to HEAD~
+a6b844476cebb395712ca738a003f8285050b685 cef85137cf7275848085c850a34222aca72d5c6a Tibor Végh <121199642+theGoodOldDeveloper@users.noreply.github.com> 1672934189 +0100	commit: pultosDay value not definied corrected 😋

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Csoport kategóriák</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style-admin.css">
+</head>
+
+<body>
+    <div class="container text-center">
+        <div class="card bg-danger text-white">
+            <h4 class="card-body text-center">T E R M É K * C S O P O R T O K</h4>
+        </div>
+        <br>
+        <form action="/" method="get">
+            <button type="submit" class="btn btn-primary mr-4 btn-lg">⚡ Vissza a menühöz ⚡ </button>
+        </form>
+
+        <form>
+            <label for="nev">Termékek csoportosítása :</label><br>
+            <input type="text" id="nev" name="nev" required><br><br>
+            <button id="newdata" class="btn btn-danger mr-4 btn-lg">Ujadat hozzáadása </button><br><br>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Neve</th>
+                    <th>Id</th>
+                </tr>
+            </thead>
+            <tbody id="xkimeresdata">
+            </tbody>
+        </table>
+        <div id="adatok"></div>
+
+        <!-- BUG:BUG:BUG:BUG:BUG:BUG:BUG: -->
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Mi legyen a csoport neve?</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form>
+                            <label for="newNev">Új név:</label><br>
+                            <input type="text" id="newNev" name="newNev"><br>
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            onclick="updatecsoportok()">Felülírom !!!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BUG:BUG:BUG:BUG:BUG:BUG:BUG: -->
+    </div>
+    <script src="jquery.slim.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.bundle.min.js"></script>
+    <!-- <script src="admin.js"></script> -->
+    <script src="csoportok.js"></script>
+</body>
+
+</html>

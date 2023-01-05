@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimérés név</title> <!-- NOTE: -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style-admin.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card bg-danger text-white">
+            <h4 class="card-body text-center">K I M É R H E T Ő * M E N N Y I S É G E K</h4>
+        </div>
+        <br>
+        <div class="text-center">
+            <form action="/" method="get">
+                <button type="submit" class="btn btn-primary mr-4 btn-lg">⚡ Vissza a menühöz ⚡ </button>
+            </form>
+        </div>
+
+        <form>
+            <label for="nev">Neve (feles ...):</label><br>
+            <input type="text" id="nev" name="nev"><br><br>
+            <label for="urtartalom">Űrtartalom <kbd> literben !!!</kbd>:</label><br>
+            <input type="number" id="urtartalom" name="urtartalom"><br><br>
+            <div class="text-center">
+                <button id="newdata" class="btn btn-danger mr-4 btn-lg">Ujadat hozzáadása </button>
+            </div>
+            <br><br>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Neve</th>
+                    <th>Ürtartalom (cl)</th>
+                </tr>
+            </thead>
+            <tbody id="xkimeresdata">
+            </tbody>
+        </table>
+        <div id="adatok"></div>
+
+        <!-- BUG:BUG:BUG:BUG:BUG:BUG:BUG: -->
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Mi legyen a kimért mennyiség neve?</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form>
+                            <label for="newNev">Új név:</label><br>
+                            <input type="text" id="newNev" name="newNev"><br>
+                        </form>
+                        <form>
+                            <label for="newUrtartalom">A kimért mennyiség űrtartalma CENTILITERBEN:</label><br>
+                            <input type="text" id="newUrtartalom" name="newUrtartalom"><br>
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            onclick="updatexkimeresnev()">Felülírom !!!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BUG:BUG:BUG:BUG:BUG:BUG:BUG: -->
+
+    </div>
+    <script src="jquery.slim.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.bundle.min.js"></script>
+    <!-- <script src="admin.js"></script> -->
+    <script src="xkimeresnev.js"></script>
+</body>
+
+</html>

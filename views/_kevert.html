@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kevert italok (kisfröccs)</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style-admin.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card bg-danger text-white">
+            <h4 class="card-body text-center">K E V E R T * I T A L O K</h4>
+        </div>
+        <br>
+        <div class="text-center">
+            <form action="/" method="get">
+                <button type="submit" class="btn btn-primary mr-4 btn-lg">⚡ Vissza a menühöz ⚡ </button>
+            </form>
+        </div>
+
+        <form action="/action_page.php">
+            <label for="nev">Neve:</label><br>
+            <input type="text" id="nev" name="nev"><br><br>
+
+            <button type="button" class="btn btn-warning mr-4 btn-lg" onclick=adalekPlus()>+ adalékok felsorolása
+                +</button>
+
+            <!-- <label for="adalekid">Adalék név :</label><br>
+            <input type="number" id="adalekid" name="adalekid"><br><br> -->
+
+
+
+
+            <!-- <label for="urtartalom">Űrtartalom <kbd> deciliterben !!!</kbd>:</label><br>
+            <input type="number" id="urtartalom" name="urtartalom"><br><br> -->
+
+            <!-- <input type="submit" value="Submit"> -->
+        </form><br><br>
+
+        <div class="card display-4" id="newVadasz"></div><br><br>
+
+        <div class="text-center">
+            <form action="/kevert" method="get">
+                <button id="newdata" class="btn btn-danger mr-4 btn-lg">Ujadat hozzáadása </button><br><br>
+                <!-- <button type="submit" style="background-color:deeppink ">other
+                    🤔 </button> -->
+            </form>
+        </div>
+
+
+
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Neve</th>
+                    <th>Termék Id</th>
+                    <th>Termék név</th>
+                    <th>Kimért kiszerelés Id</th>
+                    <th>Név</th>
+                </tr>
+            </thead>
+            <tbody id="kevert">
+
+
+
+            </tbody>
+        </table>
+
+        <div id="adatok"></div>
+
+
+    </div>
+
+    <!-- The Modal Termekek-->
+    <div class="modal" id="myModalTermekek">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Melyik legyen?</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" id="kimertTermekek">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- The Modal Kiszereles-->
+    <div class="modal" id="myModalKiszereles">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Milyen mennyiségben?</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" id="kimertKiszereles">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="jquery.slim.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.bundle.min.js"></script>
+    <!-- <script src="admin.js"></script> -->
+    <script src="kevert.js"></script><!-- BUG:BUG: BUG: BUG:BUG:-->
+    <!--  <script>
+        renderXkimeresnev();
+    </script> -->
+</body>
+
+</html>

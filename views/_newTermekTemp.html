@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/public/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container text-center">
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Neve</th>
+                    <th>Eladási ár</th>
+                    <th>Szinezése</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="tNev" id="tNev"></td>
+                    <td><input type="number" name="tEladasi" id="tEladasi" style="width: 7em"></td>
+                    <td>
+                        <input type="radio" id="primary" name="termekColor" value=0 checked>
+                          <label for="primary" class="bg-primary text-white xtermekColor">KÉK</label>
+                          <input type="radio" id="szurke" name="termekColor" value=1>
+                          <label for="szurke" class="bg-dark text-white xtermekColor">SZÜRKE</label>
+                          <input type="radio" id="zold" name="termekColor" value=2>
+                          <label for="zold" class="bg-success text-white xtermekColor">ZÖLD</label>
+                          <input type="radio" id="sarga" name="termekColor" value=3>
+                          <label for="sarga" class="bg-warning text-white xtermekColor">SÁRGA</label>
+                          <input type="radio" id="danger" name="termekColor" value=4>
+                          <label for="danger" class="bg-danger text-white xtermekColor">PIROS</label>
+                          <input type="radio" id="fekete" name="termekColor" value=5>
+                          <label for="fekete" class="bg-dark text-white xtermekColor">FEKETE</label>
+                          <input type="radio" id="feher" name="termekColor" value=6>
+                          <label for="feher" class="bg-light text-dark xtermekColor">FEHÉR</label>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <input type="button" value="Melyik?" onclick="cosnsoleWrite()">
+        <script>
+            function cosnsoleWrite() {
+                console.log('Naaaaaa😛')
+                console.log(document.getElementById('tNev').value)
+                console.log(document.getElementById('tEladasi').value)
+                const colorNumber = document.querySelectorAll(
+                    'input[name="termekColor"]'
+                );
+                var termekColor = "*";
+                for (selected of colorNumber) {
+                    if (selected.checked) {
+                        console.log(selected.value);
+                        termekColor = selected.value;
+                    }
+                }
+            }
+        </script>
+    </div>
+    <script src="/public/js/jquery.slim.min.js"></script>
+    <script src="/public/js/popper.min.js"></script>
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
