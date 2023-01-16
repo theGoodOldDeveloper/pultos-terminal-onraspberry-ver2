@@ -19,8 +19,11 @@ Date.prototype.getWeek = function () {
 const month = ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"];
 const state = {
     transactions: [],
+    transactionsinterval: [],
     pultosokPSW: [],
 };
+const sevenDay = (70 * 24 * 60 * 60 * 1000)
+const timePlus = (6 * 60 * 60 * 1000) + (45 * 60 * 1000)
 var startFilterDate = "";
 var endFilterDate = "2099. 12. 31.";
 var datum = new Date();
@@ -31,6 +34,9 @@ var currentDay = datum.getDate();
 var currentWeek = datum.getWeek();
 var currentMonth = datum.getMonth();
 var currentYear = datum.getFullYear();
+
+console.log('nap', currentDay, 'het', currentWeek, 'honap', currentMonth, 'ev', currentYear)
+
 var beforeMonth = datum.getMonth() == 0 ? 11 : datum.getMonth() - 1
 var beforeYear = datum.getMonth() == 0 ? datum.getFullYear() - 1 : datum.getFullYear()
 var pultosHaviMindosszesen = []
@@ -58,8 +64,10 @@ var origBeforeFullWorkTime = []
 var origFullBeforeWorkTimeHTML = ''
 getdata();
 async function getdata() {
-    var response = await fetch("/datareadtransactions");
+    //var response = await fetch("/datareadtransactions");
+    var response = await fetch("/datareadtransactionssevenday");
     state.transactions = await response.json();
+    //console.log(state.transactions)
     var response = await fetch("/pultosokadminpsw");
     state.pultosokPSW = await response.json();
     IntervalTransactionstions();
@@ -71,9 +79,10 @@ function IntervalTransactionstions() {
         // BUG:BUG:BUG: VERSION-2: BUG:BUG:BUG:
         //let transactionDay = new Date(transaction.trdate).getDate()
         let statisticDatum = new Date();
-        let newStatisticDayEzred = statisticDatum.getTime() - ((6 * 60 + 30) * 60 * 1000)
-        let newStatisticDatum = new Date(newStatisticDayEzred)
-        let newStatisticDay = newStatisticDatum.getDate()
+        //let newStatisticDayEzred = statisticDatum.getTime() - ((6 * 60 + 45) * 60 * 1000)
+        //let newStatisticDatum = new Date(newStatisticDayEzred)
+        let newStatisticDay = statisticDatum.getDate()
+        //console.log('**************************************', newStatisticDay)
         /* console.log('**************************************')
         console.log('transactionDay')
         console.log(transactionDay)
@@ -97,11 +106,18 @@ function IntervalTransactionstions() {
         console.log('---------------------------')
         console.log(newStatisticDay == transactionDay) */
         // BUG:BUG:BUG: VERSION-2: BUG:BUG:BUG:
+        //console.log(new Date(Date.parse(transaction.trdate) - timePlus))
         if (
             /* new Date(transaction.trdate).getDate() == currentDay && */
-            new Date(transaction.trdate).getDate() == newStatisticDay &&
+            //INFO:TODO:INFO:
+            /* new Date(Date.parse(transaction.trdate) - timePlus)   .getDate() == newStatisticDay && */
+            //INFO:TODO:INFO:
+            /* new Date(transaction.trdate).getDate() == newStatisticDay &&
             new Date(transaction.trdate).getMonth() == currentMonth &&
-            new Date(transaction.trdate).getFullYear() == currentYear
+            new Date(transaction.trdate).getFullYear() == currentYear */
+            new Date(Date.parse(transaction.trdate) - timePlus).getDate() == newStatisticDay &&
+            new Date(Date.parse(transaction.trdate) - timePlus).getMonth() == currentMonth &&
+            new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() == currentYear
         ) {
             if (transaction.trfizetesmod == "k") {
                 napiKp1 += transaction.kibeosszeg;
@@ -120,8 +136,8 @@ function IntervalTransactionstions() {
             }
         }
         if (
-            new Date(transaction.trdate).getWeek() == currentWeek &&
-            new Date(transaction.trdate).getFullYear() == currentYear
+            new Date(Date.parse(transaction.trdate) - timePlus).getWeek() == currentWeek &&
+            new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() == currentYear
         ) {
             if (transaction.trfizetesmod == "k") {
                 hetiKp1 += transaction.kibeosszeg;
@@ -141,8 +157,8 @@ function IntervalTransactionstions() {
         }
 
         if (
-            new Date(transaction.trdate).getMonth() == currentMonth &&
-            new Date(transaction.trdate).getFullYear() == currentYear
+            new Date(Date.parse(transaction.trdate) - timePlus).getMonth() == currentMonth &&
+            new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() == currentYear
         ) {
             if (transaction.trfizetesmod == "k") {
                 haviKp1 += transaction.kibeosszeg;
@@ -165,8 +181,8 @@ function IntervalTransactionstions() {
         }
 
         if (
-            new Date(transaction.trdate).getMonth() == beforeMonth &&
-            new Date(transaction.trdate).getFullYear() == beforeYear
+            new Date(Date.parse(transaction.trdate) - timePlus).getMonth() == beforeMonth &&
+            new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() == beforeYear
         ) {
             if (transaction.trfizetesmod == "k") {
                 elozoHaviKp1 += transaction.kibeosszeg;
@@ -401,47 +417,138 @@ function datepicker() {
     renderIntervalTransactions();
 }
 function dateConvertPickerToSQL(convertDatePicker, dateCode) {
+    let mont31 = [1, 3, 5, 7, 8, 10, 12]
+    let mont30 = [4, 6, 9, 11]
+    let mont28 = [2]
     let convertDateSQL = "";
     let tempDateArray = convertDatePicker.split("-");
     if (tempDateArray.length > 1 && dateCode == "s") {
-        convertDateSQL = `${tempDateArray[0]}. ${tempDateArray[1]}. ${tempDateArray[2]}. `;
+        convertDateSQL = `${tempDateArray[0]}. ${tempDateArray[1]}. ${tempDateArray[2]}. 6:44:59`;
     }
     if (tempDateArray.length > 1 && dateCode == "e") {
+
+
+        /* if (mont31.includes(parseInt(tempDateArray[1])) && parseInt(tempDateArray[2]) == 31) {
+            console.log('😊👌😁', tempDateArray[1])
+            tempDateArray[2] = 00
+            tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString()
+        } */
+
+        if (mont31.includes(parseInt(tempDateArray[1])) && parseInt(tempDateArray[2]) == 31) {
+            console.log('😊👌😁', tempDateArray[1])
+            tempDateArray[2] = 00
+            /* tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString() */
+            if (parseInt(tempDateArray[1]) == 12) {
+                tempDateArray[0] = (parseInt(tempDateArray[0]) + 1).toString()
+                tempDateArray[1] = 01
+                console.log('eeeeeeevvv', tempDateArray[0])
+
+            } else {
+                tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString()
+            }
+        }
+
+
+
+
+
+
+        if (mont31.includes(parseInt(tempDateArray[1])) && parseInt(tempDateArray[2]) == 31) {
+            console.log('😊👌😁', tempDateArray[1])
+            tempDateArray[2] = 00
+            tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString()
+        }
+        if (mont30.includes(parseInt(tempDateArray[1])) && parseInt(tempDateArray[2]) == 30) {
+            console.log('😊👌😁', tempDateArray[1])
+            tempDateArray[2] = 00
+            tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString()
+        }
+        if (mont28.includes(parseInt(tempDateArray[1])) && parseInt(tempDateArray[2]) == 28) {
+            //console.log('😊👌😁', tempDateArray[1])
+            tempDateArray[2] = 00
+            tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString()
+        }
+
         convertDateSQL = `${tempDateArray[0]}. ${tempDateArray[1]}. ${(
             parseInt(tempDateArray[2]) + 1
-        ).toString()}. `;
+        ).toString()}. 6:45:00`;
     }
+    //INFO:TODO:INFO:
+    //console.log(convertDatePicker, dateCode)
+
+
+    //INFO:TODO:INFO:
     return convertDateSQL;
 }
 
 function renderIntervalTransactions() {
-    zeroValue()
-    for (let transaction of state.transactions) {
-        if (
-            transaction.trdate >= startFilterDate &&
-            transaction.trdate <= endFilterDate
-        ) {
-            if (transaction.trfizetesmod == "k") {
-                intervalKp1 += transaction.kibeosszeg;
-                intervalHaszon += transaction.kibeosszegbeszar;
-            }
-            if (transaction.trfizetesmod == "m") {
-                intervalKp2 += transaction.kibeosszeg;
-                intervalHaszon += transaction.kibeosszegbeszar;
-            }
-            if (transaction.trfizetesmod == "c") {
-                intervalCard += transaction.kibeosszeg;
-                intervalHaszon += transaction.kibeosszegbeszar;
-            }
-            if (transaction.trfizetesmod == "b") {
-                intervalKivet += transaction.kibeosszeg;
+    //INFO:TODO:INFO:
+    //console.log('startFilterDate', startFilterDate)
+    //console.log('endFilterDate', endFilterDate)
+    // INFO: TODO: INFO:
+    getTransactionItervallum()
+    async function getTransactionItervallum() {
+
+        let sendStartFilterDate = convertDatum(startFilterDate)
+        let sendEndFilterDate = convertDatum(endFilterDate)
+
+
+        response = await fetch(`/datareadtransactionssevenday/${sendStartFilterDate}`, {
+            method: "GET",
+            headers: {
+                "Content-type": "text/html",
+                "sendstartdatum": sendStartFilterDate,
+                "tempstart": sendEndFilterDate,
+                "tempend": sendEndFilterDate,
+                "sendenddatum": sendEndFilterDate,
+            },
+        })
+        state.transactionsinterval = await response.json()
+        /* console.log(state.transactionsinterval, '**********************************')
+
+        console.log('🛠🛠🛠🛠🛠🛠🛠send...🛠🛠🛠🛠🛠🛠🛠🛠🛠🛠🛠')
+        console.log(sendStartFilterDate)
+        console.log(sendEndFilterDate) */
+
+        zeroValue()
+        let i = 0
+        for (let transaction of state.transactionsinterval) {
+            i++
+            if (
+                Date.parse(transaction.trdate) >= Date.parse(startFilterDate) &&
+                Date.parse(transaction.trdate) <= Date.parse(endFilterDate)
+            ) {
+                if (transaction.trfizetesmod == "k") {
+                    intervalKp1 += transaction.kibeosszeg;
+                    intervalHaszon += transaction.kibeosszegbeszar;
+                }
+                if (transaction.trfizetesmod == "m") {
+                    intervalKp2 += transaction.kibeosszeg;
+                    intervalHaszon += transaction.kibeosszegbeszar;
+                }
+                if (transaction.trfizetesmod == "c") {
+                    intervalCard += transaction.kibeosszeg;
+                    intervalHaszon += transaction.kibeosszegbeszar;
+                }
+                if (transaction.trfizetesmod == "b") {
+                    intervalKivet += transaction.kibeosszeg;
+                }
             }
         }
+        ezresCsoportosit();
+        intervalHTML += `<tr><td>Intervallum</td><td>${intervalKp1}</td><td>${intervalKp2}</td><td>${intervalCard}</td><td>${intervalMindosszesen}</td><td>${intervalKivet}</td><td>${intervalNetto}</td><td>${intervalZseb}</td></tr>`
+        document.getElementById('intervalStatisticRow').innerHTML = intervalHTML
+        intervalHTML = ''
+
+
     }
-    ezresCsoportosit();
-    intervalHTML += `<tr><td>Intervallum</td><td>${intervalKp1}</td><td>${intervalKp2}</td><td>${intervalCard}</td><td>${intervalMindosszesen}</td><td>${intervalKivet}</td><td>${intervalNetto}</td><td>${intervalZseb}</td></tr>`
-    document.getElementById('intervalStatisticRow').innerHTML = intervalHTML
-    intervalHTML = ''
+
+
+
+
+
+
+
 }
 
 function renderPultosokOnOff() {
@@ -739,4 +846,18 @@ function ezresCsoportositElozoHavi() {
     pultosElozoHaviMindosszesen[3] = pultosElozoHaviMindosszesen[3].toLocaleString("hu-HU", {
         maximumFractionDigits: 0,
     });
+}
+
+function convertDatum(cdatum) {
+    cdatum = new Date(cdatum)
+    let ev = cdatum.getFullYear()
+    let honap = cdatum.getMonth() + 1
+    honap = honap < 10 ? "0" + honap : honap
+    let nap = cdatum.getDate()
+    nap = nap < 10 ? "0" + nap : nap
+
+    let cNap = `${ev}. ${honap}. ${nap}.`
+    //console.log(maiNap)
+    return cNap
+    //var endFilterDate = "2099. 12. 31.";
 }

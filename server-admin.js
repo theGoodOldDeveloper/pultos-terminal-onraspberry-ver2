@@ -8,6 +8,8 @@ var port = conf.parsed.ADMINPORT;
 var mysql = require("mysql");
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(express.static("public/js"));
@@ -309,12 +311,110 @@ app.get("/datareadforgalom", (req, res) => {
         res.send(data);
     });
 });
+app.get("/datareadforgalomtwoday", (req, res) => {
+    let datumToday = new Date(Date.parse(new Date()) + (24 * 60 * 60 * 1000))
+    todayDayIntervallum(datumToday)
+    let datumBefore = new Date(Date.parse(new Date()) - (48 * 60 * 60 * 1000))
+    beforeDayIntervallum(datumBefore)
+
+    con.query(`SELECT * FROM forgalom WHERE eladottdate BETWEEN ? AND ?;`, [beforeDayIntervallum(datumBefore), todayDayIntervallum(datumToday)],
+        (err, data) => {
+            if (err) throw err;
+            res.send(data);
+        });
+});
+
+app.get("/datareadforgalomtwodayintervall/:startFilterDate", (req, res) => {
+    const paramsData = req.params.startFilterDate;
+    const sendStartDatum = req.headers.sendstartdatum;
+    const sendEndDatum = req.headers.sendenddatum;
+    /* console.log('paramsData😁', paramsData, 'paramsData😁')
+    console.log('sendStartDatum😁😁😁😁', sendStartDatum)
+    console.log('sendEndDatum😁', sendEndDatum) */
+    let datumBefore = new Date(Date.parse(sendStartDatum) - (24 * 60 * 60 * 1000))
+    let datumToday = new Date(Date.parse((sendEndDatum)) + (48 * 60 * 60 * 1000))
+
+    /* console.log('=======================================')
+    console.log('datumToday / datumBefore', datumToday, datumBefore)
+    console.log(beforeDayIntervallum(datumBefore), todayDayIntervallum(datumToday))
+    console.log('=======================================') */
+
+    con.query(`SELECT * FROM forgalom WHERE eladottdate BETWEEN ? AND ?;`, [beforeDayIntervallum(datumBefore), todayDayIntervallum(datumToday)],
+        (err, data) => {
+            if (err) throw err;
+            res.send(data);
+        });
+});
+
+
 app.get("/datareadtransactions", (req, res) => {
     con.query("SELECT * FROM transactions", (err, data) => {
         if (err) throw err;
         res.send(data);
     });
 });
+app.get("/datareadtransactionssevenday", (req, res) => {
+    let datumToday = new Date(Date.parse(new Date()) + (24 * 60 * 60 * 1000))
+    todayDayIntervallum(datumToday)
+    let datumBefore = new Date(Date.parse(new Date()) - (70 * 24 * 60 * 60 * 1000))
+    beforeDayIntervallum(datumBefore)
+
+    con.query(`SELECT * FROM transactions WHERE trdate BETWEEN ? AND ?;`,
+        [beforeDayIntervallum(datumBefore), todayDayIntervallum(datumToday)],
+        (err, data) => {
+            if (err) throw err;
+            res.send(data);
+        });
+});
+app.get("/datareadtransactionssevenday/:startFilterDate", (req, res) => {
+    const paramsData = req.params.startFilterDate;
+    const sendStartDatum = req.headers.sendstartdatum;
+    const sendEndDatum = req.headers.sendenddatum;
+    /* console.log('paramsData😁', paramsData, 'paramsData😁')
+    console.log('sendStartDatum😁😁😁😁', sendStartDatum)
+    console.log('sendEndDatum😁', sendEndDatum) */
+
+    let datumBefore = new Date(Date.parse(sendStartDatum) - (24 * 60 * 60 * 1000))
+    let datumToday = new Date(Date.parse((sendEndDatum)) + (48 * 60 * 60 * 1000))
+
+    /* console.log('=======================================')
+    console.log('datumToday / datumBefore', datumBefore, datumToday)
+    console.log(beforeDayIntervallum(datumBefore), todayDayIntervallum(datumToday))
+    console.log('=======================================') */
+
+    con.query(`SELECT * FROM transactions WHERE trdate BETWEEN ? AND ?;`, [beforeDayIntervallum(datumBefore), todayDayIntervallum(datumToday)],
+        (err, data) => {
+            if (err) throw err;
+            res.send(data);
+        });
+});
+
+/* INFO: todayDayIntervallum */
+function todayDayIntervallum(datum) {
+    //console.log(datum, '*******************meeee*********************')
+    //let datum = new Date(Date.parse(new Date()) + (24 * 60 * 60 * 1000))
+    let ev = datum.getFullYear()
+    let honap = datum.getMonth() + 1
+    honap = honap < 10 ? "0" + honap : honap
+    let nap = datum.getDate()
+    nap = nap < 10 ? "0" + nap : nap
+
+    let maiNap = `${ev}. ${honap}. ${nap}.`
+    //console.log('maiNap', maiNap)
+    return maiNap
+}
+function beforeDayIntervallum(datum) {
+    //console.log(datum, '-------------------------------------')
+    //let datum = new Date(Date.parse(new Date()) - (48 * 60 * 60 * 1000))
+    let ev = datum.getFullYear()
+    let honap = datum.getMonth() + 1
+    honap = honap < 10 ? "0" + honap : honap
+    let nap = datum.getDate()
+    nap = nap <= 9 ? "0" + nap : nap
+    let tegnapiNap = `${ev}. ${honap}. ${nap}.`
+    //console.log('tegnapiNap', tegnapiNap)
+    return tegnapiNap
+}
 
 /* INFO: config */
 app.get("/config", (req, res) => {

@@ -514,7 +514,7 @@ $(".kosarak").click(function () {
             $("#kosarakModal").modal();
             var kosarSorokHTML = "";
             for (let index = 0; index < state.kosarak.length; index++) {
-                kosarSorokHTML += `<button type="button" class="btn btn-info m-2 zzzzz zizitoast" id=${index}> ${state.kosarNevek[index].kosarMegnevezes} - ${state.kosarNevek[index].kosarMegnevezesIndex}</button> --> ${state.kosarak[index][0].datum} 
+                kosarSorokHTML += `<button type="button" class="btn btn-info m-2 zzzzz zizitoast " id=${index} style="color: black; font-weight: bold;"> ${state.kosarNevek[index].kosarMegnevezes} - ${state.kosarNevek[index].kosarMegnevezesIndex}</button> --> ${state.kosarak[index][0].datum} 
                 <br>`;
                 /* <button type="button" class="btn btn-danger m-2 tempdelete" id=${index}>DELETE</button> */
             }
