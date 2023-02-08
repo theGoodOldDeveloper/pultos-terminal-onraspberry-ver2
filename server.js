@@ -218,6 +218,12 @@ app.get("/gettransactionssaldo", (req, res) => {
     console.log('A mai datum: kp2 -> ', datum)
     con.query(`SELECT SUM(kibeosszeg) FROM transactions WHERE trfizetesmod = 'm' AND trdate LIKE '%${datum}%'`, (err, data) => {
         if (err) throw err;
+        //console.log('data', data)
+        //console.log('data', data[0]["SUM(kibeosszeg)"])
+        if (data[0]["SUM(kibeosszeg)"] == null) {
+            //console.log('itt a bibi 11111')
+            data[0]["SUM(kibeosszeg)"] = 0
+        }
         res.send(data);
     });
     /* con.query("SELECT * FROM transactions WHERE trfizetesmod = 'm' AND GETDATE() = ''", (err, data) => {
@@ -229,9 +235,13 @@ app.get("/gettransactionssaldo", (req, res) => {
 app.get("/gettransactionssaldocard", (req, res) => {
     let datum = new Date().toLocaleString()
     datum = datum.substring(0, 13)
-    console.log('A mai datum:  card -> ', datum)
+    //console.log('A mai datum:  card -> ', datum)
     con.query(`SELECT SUM(kibeosszeg) FROM transactions WHERE trfizetesmod = 'c' AND trdate LIKE '%${datum}%'`, (err, data) => {
         if (err) throw err;
+        if (data[0]["SUM(kibeosszeg)"] == null) {
+            //console.log('itt a bibi 2222')
+            data[0]["SUM(kibeosszeg)"] = 0
+        }
         res.send(data);
     });
 });

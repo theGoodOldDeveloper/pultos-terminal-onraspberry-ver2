@@ -851,6 +851,8 @@ $(".kpKivet").click(function () {
     //FIXME:
     document.getElementById("keyboardTemplateKivet").innerHTML =
         keyboardTemplateHTML;
+    kivetMegnevezes = ''
+    kivet = ''
     //FIXME:
     $(".keyboard").off("click");
     document.querySelector("#kivetMegnevezesId").value = "";
@@ -872,6 +874,8 @@ function kivetOsszegNumber() {
     $("#osszegModal").modal();
     $(".calc").off("click");
     document.querySelector("#osszegKivetId").value = "";
+    osszegKivet = "";
+    osszeg = 0
     $(".calc").on("click", function () {
         inputKey = "";
         inputKey = this.id;
@@ -1210,6 +1214,7 @@ async function saldoCalculation() {
     document.getElementById("saldoMessageSendTarget").innerHTML = 'LIMIT'
     document.getElementById("saldoMessageSendComplete").innerHTML = '<h3>' + saldoComplete + ' Ft</h3>'
     //clearTimeout(timerId);
+    alert(saldoComplete + 'Ft')
     localStorage.setItem("saldoRuning", true)
     localStorage.setItem("saldoRuningDay", new Date().getDate())
 }
