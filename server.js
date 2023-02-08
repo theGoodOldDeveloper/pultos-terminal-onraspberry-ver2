@@ -275,7 +275,8 @@ app.get("/datareadalapanyagok", (req, res) => {
 /* INFO: /datareadtermekek */
 app.get("/datareadtermekek", (req, res) => {
     con.query(
-        "SELECT * FROM termekek ORDER BY visiblesequence",
+        //"SELECT * FROM termekek ORDER BY visiblesequence",
+        "SELECT * FROM termekek WHERE visible=1 ORDER BY visiblesequence",
         (err, data) => {
             if (err) throw err;
             res.send(data);

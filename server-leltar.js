@@ -129,6 +129,7 @@ app.post("/updateleltar", bodyParser.json(), (req, res) => {
             console.log('index')
             console.log(index)
             sendLeltarHTML += `A leltározást végezte: ${content[index].pultos} Dátum: ${datum}`
+            //INFO:TODO:INFO:
             sendMailData(sendTextRequired, sendLeltarHTML, templateTime);
             //sendMailDataCopy(sendTextRequired, sendLeltarHTML, templateTime);
         }
@@ -182,10 +183,14 @@ function getdata() {
         if (err) throw err;
         state.alapanyagReport = data;
     });
-    con.query("SELECT * FROM forgalom", (err, data2) => {
-        if (err) throw err;
-        state.forgalomReport = data2;
-    });
+    //INFO:TODO:INFO:con.query("SELECT * FROM forgalom", (err, data2) => {
+    con.query("SELECT * FROM forgalom WHERE eladottdate >= ?;",
+        [twoMontInterval()],
+        (err, data2) => {
+            if (err) throw err;
+            state.forgalomReport = data2;
+            //console.log(state.forgalomReport)
+        });
     con.query("SELECT * FROM termekek_has_alapanyagok", (err, data3) => {
         if (err) throw err;
         state.fromTermekToAlapanyag = data3;
@@ -194,10 +199,14 @@ function getdata() {
         if (err) throw err;
         state.alapanyagok = data4;
     });
-    con.query("SELECT * FROM transactions", (err, data5) => {
-        if (err) throw err;
-        state.transactions = data5;
-    });
+    //INFO:TODO:INFO:con.query("SELECT * FROM transactions", (err, data5) => {
+    con.query("SELECT * FROM transactions WHERE trdate >= ?;",
+        [twoMontInterval()],
+        (err, data5) => {
+            if (err) throw err;
+            state.transactions = data5;
+            //console.log(state.transactions)
+        });
 
     fs.readFile(__dirname + "/psw.txt", 'utf8', (err, data) => {
         if (err) {
@@ -210,6 +219,21 @@ function getdata() {
 }
 
 getdata();// BUG: ??? mert az elso futas = 0 BUG:
+
+/* INFO: twoMontInterval */
+function twoMontInterval() {
+    //console.log(datum, '*******************meeee*********************')
+    let intervalDatum = new Date(Date.parse(new Date()) - (48 * 24 * 60 * 60 * 1000))
+    let ev = intervalDatum.getFullYear()
+    let honap = intervalDatum.getMonth() + 1
+    honap = honap < 10 ? "0" + honap : honap
+    let nap = intervalDatum.getDate()
+    nap = nap < 10 ? "0" + nap : nap
+
+    let twoMonthDate = `${ev}. ${honap}. ${nap}.`
+    //console.log('twoMonthDate: ', twoMonthDate)
+    return twoMonthDate
+}
 
 /* https://crontab.guru/ */
 
@@ -261,7 +285,6 @@ cron.schedule("0 8 * * 1", () => {
     //VERSION-2:INFO:TODO:INFO:VERSION-2:
     getdata()
 });
-//cron.schedule("55 16 * * *", () => {
 //cron.schedule("*/5 * * * * *", () => {
 cron.schedule("0 9 * * 1", () => {
     //VERSION-2:INFO:TODO:INFO:VERSION-2:
@@ -376,7 +399,7 @@ function weeklySalesCalculation() {
     //VERSION-2:INFO:TODO:INFO:VERSION-2:
     getdata()
 
-    var weekNumber = (new Date()).getWeek() - 1
+    var weekNumber = (new Date()).getWeek() - 1 //eloozoo heet
     var weekDay = 1
     var checkMondayTime = ''
     var salesWeek = 0
@@ -397,17 +420,26 @@ function weeklySalesCalculation() {
     for (weekReport of state.forgalomReport) {
         salesWeek = new Date(weekReport.eladottdate)
 
-        if (salesWeek.getWeek() >= weekNumber) {
+        if (salesWeek.getWeek() >= weekNumber && salesWeek.getWeek() <= weekNumber + 5) {
 
             stringMount = salesWeek.getMonth() < 9 ? `0${salesWeek.getMonth() + 1}` : salesWeek.getMonth() + 1
             stringDay = salesWeek.getDate() < 10 ? `0${salesWeek.getDate()}` : salesWeek.getDate()
             checkMondayTime = new Date(`${salesWeek.getFullYear()}-${stringMount}-${stringDay}T03:30:00.000Z`)
-
+            //INFO:TODO:INFO:
+            /* console.log('salesWeek.getWeek(): ', salesWeek.getWeek())
+            console.log('weekNumber: ', weekNumber)
+            console.log('salesWeek.getDay(): ', salesWeek.getDay())
+            console.log('weekDay: ', weekDay)
+            console.log('salesWeek: ', salesWeek)
+            console.log('checkMondayTime: ', checkMondayTime) */
+            //INFO:TODO:INFO:
             if (salesWeek.getWeek() == weekNumber && salesWeek.getDay() == weekDay && salesWeek >= checkMondayTime) {
                 state.weekReportJSON.push({ termekid: weekReport.termekid, db: weekReport.db })
+
             }
             if (salesWeek.getDay() != weekDay) {
                 state.weekReportJSON.push({ termekid: weekReport.termekid, db: weekReport.db })
+
             }
             if (salesWeek.getWeek() == weekNumber + 1 && salesWeek.getDay() == weekDay && salesWeek < checkMondayTime) {
                 state.weekReportJSON.push({ termekid: weekReport.termekid, db: weekReport.db })
@@ -415,6 +447,9 @@ function weeklySalesCalculation() {
 
         }
     }
+    //INFO:TODO:INFO:
+    //console.log(state.weekReportJSON)
+    //INFO:TODO:INFO:
     for (weekTermek of state.weekReportJSON) {
         for (termekToAlapanyag of state.fromTermekToAlapanyag) {
             if (termekToAlapanyag.termek_id == weekTermek.termekid) {
@@ -692,12 +727,14 @@ function beforeMonthSales() {
 
         pultosHTML += `
         <tr>
-            <td>${state.pultosokPSW[index].name}</td>
+            <td>${state.pultosokPSW[index].name}
+            </td>
             <td style="text-align: right;padding-left: 21px;">${pultosElozoHaviMindosszesen[index].toLocaleString("hu-HU", {
             maximumFractionDigits: 0,
         })}</td>
             <td style="text-align: right;padding-left: 21px;">${fullWorkTimeHour}</td>
-            <td style="text-align: right;padding-left: 21px;">${fullWorkMindosszesenPerTimeHour}</td>
+            <td style="text-align: right;padding-left: 21px;">${fullWorkMindosszesenPerTimeHour}
+            </td>
         </tr>
         `
         /* pultosHTML += `
@@ -708,7 +745,7 @@ function beforeMonthSales() {
         ` */
     }
     pultosHTML += `</table>`
-
+    //INFO:TODO:INFO:console.log(fullWorkTimeARRAY)
     return [transactionsHTML, pultosHTML]
 
     function zeroValue() {
@@ -740,9 +777,13 @@ function fullWorkTimeCalculation(beforeYear, beforeMonth) {
                 startTime = new Date(transaction.trdate).getTime()
             }
             if (transaction.megjegyzes == 'workTime' && transaction.trfizetesmod == 'f') {
+                if (startTime == 0) {
+                    startTime = new Date(transaction.trdate).getTime()
+                }
                 endTime = new Date(transaction.trdate).getTime()
                 workTime = parseInt((endTime - startTime) / 1000 / 60)
                 fullWorkTime[transaction.pultos] += workTime
+                //INFO:TODO:INFO:console.log(startTime, endTime)
             }
         }
 

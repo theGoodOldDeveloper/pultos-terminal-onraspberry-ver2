@@ -13,6 +13,7 @@ var sendStartDatum = ''
 var sendEndDatum = ''
 
 var testForgalom = 0
+var testForgalomFirst = 0
 var xid = 1;
 var origId = -1;
 //INFO:TODO:INFO:
@@ -48,6 +49,7 @@ async function getdata() {
     var response = await fetch("/datareadforgalomtwoday");
     state.forgalom = await response.json();
     //console.log('state.forgalom', state.forgalom)
+
     var response = await fetch("/datareadtermekek");
     state.termekek = await response.json();
     for (termek of state.termekek) {
@@ -81,6 +83,7 @@ function renderforgalom() {
     let hour = 0
     let haszon = -1
     init()
+    let realForg = 0//INFO:TODO:INFO://INFO:TODO:INFO:
     for (let vForgalom of state.forgalom) {
         //INFO:TODO:INFO:
         /* console.log('-----------------------------------------------')
@@ -94,10 +97,12 @@ function renderforgalom() {
         console.log('hmmmm :----STA----', (Date.parse(vForgalom.eladottdate) >= startFilterDate))
         console.log('hmmmm :----END----', (Date.parse(vForgalom.eladottdate) <= Date.parse(endFilterDate))) */
         //INFO:TODO:INFO:
+
         if (
             Date.parse(vForgalom.eladottdate) >= startFilterDate &&
             Date.parse(vForgalom.eladottdate) <= Date.parse(endFilterDate)
         ) {
+            realForg += vForgalom.db * vForgalom.eladottelar//INFO:TODO:INFO://INFO:TODO:INFO:
             termekDB[vForgalom.termekid] += vForgalom.db
             haszon = Math.round(vForgalom.db * (vForgalom.eladottelar - vForgalom.eladottbeszar))
             forgalomHTML += `<tr >
@@ -105,6 +110,7 @@ function renderforgalom() {
         </tr>
         `;
             //INFO:TODO:INFO:
+            testForgalomFirst += vForgalom.db * vForgalom.eladottelar
             testForgalom += vForgalom.db * vForgalom.eladottelar
             //INFO:TODO:INFO:
             hour = new Date(vForgalom.eladottdate)
@@ -164,8 +170,8 @@ function renderforgalom() {
     forgalomHOURHTML += `<br><br>`
 
     document.getElementById("forgalomdata").innerHTML = forgalomHTML;
-    /* console.log('termekDB')
-    console.log(termekDB) */
+    //console.log('termekDB')
+    //console.log(termekDB)
     for (termek of state.termekek) {
         if (termekDB[termek.id] > 0) {
             forgalomDBHTML += `<tr >
@@ -197,6 +203,9 @@ function renderforgalom() {
 
         }
     }
+    /* console.log('realForg: --------------', realForg)
+    console.log('testForgalomFirst: =====', testForgalomFirst)
+    console.log('testForgalom: ++++++++++', testForgalom) */
     /* for (index = 0; index < alapanyagFogyas.length; index++) {
         //VERSION-2://VERSION-2://VERSION-2://VERSION-2://VERSION-2://VERSION-2:
         forgalomALAPANYAGOKHTML += `<tr >
@@ -370,8 +379,10 @@ function holnapiDatum() {
     let honap = datum.getMonth() + 1
     honap = honap < 10 ? "0" + honap : honap
     let nap = datum.getDate()
+    let holnapiNap = datum.getDate() + 1
     nap = nap < 9 ? "0" + nap : nap
-    let holnapiNap = `${ev}. ${honap}. ${nap + 1}. 6:44:59`
+    holnapiNap = holnapiNap < 9 ? "0" + holnapiNap : holnapiNap
+    holnapiNap = `${ev}. ${honap}. ${holnapiNap}. 6:44:59`
     return holnapiNap
 }
 function init() {

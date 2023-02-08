@@ -316,7 +316,6 @@ app.get("/datareadforgalomtwoday", (req, res) => {
     todayDayIntervallum(datumToday)
     let datumBefore = new Date(Date.parse(new Date()) - (48 * 60 * 60 * 1000))
     beforeDayIntervallum(datumBefore)
-
     con.query(`SELECT * FROM forgalom WHERE eladottdate BETWEEN ? AND ?;`, [beforeDayIntervallum(datumBefore), todayDayIntervallum(datumToday)],
         (err, data) => {
             if (err) throw err;

@@ -418,6 +418,10 @@ function updatetermekek() {
                 btncolor: btncolor,
             }),
         });
+        //INFO:TODO:INFO://INFO:TODO:INFO://INFO:TODO:INFO:
+        // 418 sor utaan visible = 0
+        // alapanyagok leltarozando = 0; kritikus = 0
+        //INFO:TODO:INFO://INFO:TODO:INFO://INFO:TODO:INFO:
         let arrowIndex = -1;
         for (let i = 0; i < state.termekek.length; i++) {
             if (state.termekek[i].id == id) {

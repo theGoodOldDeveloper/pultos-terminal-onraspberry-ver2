@@ -1,3 +1,18 @@
+var elem = document.documentElement;
+function openFullscreen() {
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+    }
+    //window.close()
+    $("#hideFullScreen").hide();
+}
+
+
+
 var querykp2 = -1
 let temp = [];
 let tempWeek = ["", "", "", "", "", "", ""];
@@ -215,7 +230,11 @@ async function getdata() {
         oldTodolist[weekNumber] = state.todolist[weekNumber]
         localStorage.setItem("todolist", JSON.stringify(oldTodolist))
     }
-
+    let index = 1
+    for (termek of state.termekek) {
+        termek.visiblesequence = index
+        index++
+    }
     renderProducts();
 
     /* NOTE: A button click funkciójának figyelése */
@@ -230,6 +249,12 @@ async function getdata() {
             arrayIndex = visiblesequenceIndex;
             var edb = 1;
             eladottElar = state.termekek[arrayIndex].elar;
+            /* console.log('**************************************')
+            console.log('visiblesequenceIndex', visiblesequenceIndex)
+            console.log()
+            console.log('id', state.termekek[arrayIndex].id)
+            console.log('nev', state.termekek[arrayIndex].nev)
+            console.log('**************************************') */
             sorokNev = state.termekek[arrayIndex].nev;
             sorokId = state.termekek[arrayIndex].id;
             sorokEladottBeszar = tBeszar[sorokId];
@@ -381,7 +406,7 @@ function termekKeszletModositas(sendData, muvelet) {
             sendData.aId = osszetevo.alapanyag_id; //HACK:
             sendData.sumcl = Math.round(aKeszletsum[osszetevo.alapanyag_id] * 100) / 100; //HACK:
 
-            console.log('*************sendData.sumcl***************', sendData.sumcl)
+            //console.log('*************sendData.sumcl***************', sendData.sumcl)
 
             sendData.cl = osszetevo.felhasznaltmennyiseg; //HACK:
 
@@ -425,8 +450,8 @@ function termekKeszletModositas(sendData, muvelet) {
 /* TODO:TODO:TODO: TAROLJ TODO:TODO:TODO: */
 function tarolj(id, sumcl, cl, db) {
     sumcl = Math.round(sumcl * 100) / 100
-    console.log('<<<<<<<<<<<<<<<<<<id, sumcl, cl, db>>>>>>>>>>>>>>>>>')
-    console.log(id, sumcl, cl, db)
+    //console.log('<<<<<<<<<<<<<<<<<<id, sumcl, cl, db>>>>>>>>>>>>>>>>>')
+    //console.log(id, sumcl, cl, db)
     try {
         updateMySQL();
     } catch (e) { }
@@ -498,7 +523,9 @@ $(".kilepes").click(function () {
     } else {
         kosarakTarol();
         offPultos();
+        //window.location.href = "about:blank";
         window.location.href = "/";
+        //window.close()
     }
 });
 
