@@ -1,1 +1,1 @@
-[{"kosarMegnevezes":"M","kosarMegnevezesIndex":1,"kosarMegnevezesPultosNeve":"Zoli a tutti","kosarMegnevezesPultosKod":"0"},{"kosarMegnevezes":"KOS.KATTO","kosarMegnevezesIndex":2,"kosarMegnevezesPultosNeve":"Zoli a tutti","kosarMegnevezesPultosKod":"0"},{"kosarMegnevezes":"HARMADIK","kosarMegnevezesIndex":3,"kosarMegnevezesPultosNeve":"Zoli a tutti","kosarMegnevezesPultosKod":"0"}]
+[]

@@ -216,7 +216,8 @@ app.get("/gettransactionssaldo", (req, res) => {
     //let datum = `${datumNow.getFullYear()}. ${datumNow.getMonth()} ${datumNow.getDate()}.`
     //let datum = datumNow.getDate() datumNow.getFullYear() datumNow.getMonth
     console.log('A mai datum: kp2 -> ', datum)
-    con.query(`SELECT SUM(kibeosszeg) FROM transactions WHERE trfizetesmod = 'm' AND trdate LIKE '%${datum}%'`, (err, data) => {
+    //BUG: - con.query(`SELECT SUM(kibeosszeg) FROM transactions WHERE trfizetesmod = 'm' AND trdate LIKE '%${datum}%'`, (err, data) => {
+    con.query(`SELECT SUM(kibeosszeg) FROM transactions WHERE (trfizetesmod = 'm' OR trfizetesmod = 'c') AND trdate LIKE '%${datum}%'`, (err, data) => {
         if (err) throw err;
         //console.log('data', data)
         //console.log('data', data[0]["SUM(kibeosszeg)"])

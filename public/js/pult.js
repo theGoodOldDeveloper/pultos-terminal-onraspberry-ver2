@@ -12,7 +12,8 @@ function openFullscreen() {
 }
 
 
-
+var oraPercFull = new Date()
+var oraPerc = `(${oraPercFull.getHours()}-${oraPercFull.getMinutes()})`
 var querykp2 = -1
 let temp = [];
 let tempWeek = ["", "", "", "", "", "", ""];
@@ -78,7 +79,8 @@ var productItem = 0;
 const tabSor = 8;
 const tabOszlop = 6;
 const widthBTN = 8;
-const heightBTN = 3.95;
+//BUG: - const heightBTN = 3.95;
+const heightBTN = 3.75;
 var createTabsHTML = "";
 var createContentHTML = "";
 const btnBgColor = [
@@ -312,15 +314,15 @@ function renderProducts() {
         document.getElementById("createTabs").innerHTML = createTabsHTML;
         for (let tabIndex = 0; tabIndex <= allTabs; tabIndex++) {
             createContentHTML += `<div id="menu${tabIndex}" class="container  tab-pane ${tabIndex == 0 ? "active" : "fade"
-                }"><br>
-            `;
+                }">
+    `;
             contentIndex < productItem - tabSor * tabOszlop
                 ? (actualContentIndex = tabSor * tabOszlop)
                 : (actualContentIndex = productItem - contentIndex);
             for (let index = 0; index < actualContentIndex; index++) {
                 createContentHTML += `<button type="button" class=" m-1 p-1 font-weight-bold btn btn-${btnBgColor[state.termekek[contentIndex + index].btncolor]
                     } termekButton" style="width: ${widthBTN}em; height: ${heightBTN}em; font-size: 100%" id = ${state.termekek[contentIndex + index].id
-                    } 
+                    }
                 data-visiblesequence = ${state.termekek[contentIndex + index].visiblesequence
                     }
                 >${state.termekek[contentIndex + index].nev} </button>`;
@@ -342,27 +344,27 @@ function renderPult() {
         tetelSorokHTML += `
         <div class="card">
         <div class="font-weight-bold d-flex justify-content-between" style=" padding-right: 3em">
-        <h4>
-            ${sorok.nev}: </h4>
+            <h4>
+                ${sorok.nev}: </h4>
             <h4 style:"font-size: 155%">${sorok.eladottelar.toLocaleString(
             "hu-HU",
             { maximumFractionDigits: 0 }
         )}</h4>
         </div>
-        <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between">
         <div >
             <h3><button class="btn mr-4 btn-danger delete-db" id = ${tombIndex}>X</button>   <button class="btn mr-2 btn-warning remove-db" id = ${tombIndex}>-</button>  <span  > ${sorok.db
             } </span>   <button class="btn ml-2 btn-success insert-db" id = ${tombIndex}>+</button> </h3>
-        </div>  
+        </div>
         <h3 class="font-weight-bold">${(
                 sorok.eladottelar * sorok.db
             ).toLocaleString("hu-HU", {
                 maximumFractionDigits: 0,
             })}</h3>
-        </div>
+    </div>
         </div>
         <h6 <hr color="#ff0000"></h6>
-        `;
+`;
         tombIndex++;
         mindosszesen += sorok.eladottelar * sorok.db;
         mindosszesenBeszar += sorok.eladottbeszar * sorok.db;
@@ -542,7 +544,7 @@ $(".kosarak").click(function () {
             var kosarSorokHTML = "";
             for (let index = 0; index < state.kosarak.length; index++) {
                 kosarSorokHTML += `<button type="button" class="btn btn-info m-2 zzzzz zizitoast " id=${index} style="color: black; font-weight: bold;"> ${state.kosarNevek[index].kosarMegnevezes} - ${state.kosarNevek[index].kosarMegnevezesIndex}</button> --> ${state.kosarak[index][0].datum} 
-                <br>`;
+<br>`;
                 /* <button type="button" class="btn btn-danger m-2 tempdelete" id=${index}>DELETE</button> */
             }
 
@@ -553,17 +555,17 @@ $(".kosarak").click(function () {
                 console.log('klikkkkeltem', this.id)
 
                 /* let text = `Ha BIZTOS  vagy benne, hogy torolni akarod a :\n  ${state.kosarNevek[this.id].kosarMegnevezes}\n Akkor kattints az OK gombra`
-                if (confirm(text) == true) {
-                    text = "You pressed OK!";
-                    state.kosarak.splice(this.id, 1);
-                    state.kosarNevek.splice(this.id, 1);
-                    kosarbolVisszatoltott = false;
+    if (confirm(text) == true) {
+        text = "You pressed OK!";
+    state.kosarak.splice(this.id, 1);
+    state.kosarNevek.splice(this.id, 1);
+    kosarbolVisszatoltott = false;
                     foundKosar = state.kosarak.length > 0 ? true : false;
 
-                    kosarakTarol();
+    kosarakTarol();
                 } else {
-                    text = "You canceled!";
-                    console.log('You canceled!')
+        text = "You canceled!";
+    console.log('You canceled!')
                 } */
 
 
@@ -630,7 +632,7 @@ function visszajaro() {
             </tr>
             `;
             /* visszajaroCimlet += `<h4><kbd>${cimlet}</kbd> cimletből visszajár: <span class="font-weight-bold"> ${cimlet - mindosszesenTransaction
-                },- </span> Ft</h4>`; */
+        },- </span> Ft</h4>`; */
         }
     }
     visszajaroCimlet += `
@@ -669,6 +671,7 @@ function trKp2() {
         );
         if (mindosszesenTransaction > 0) {
             visszajaro();
+            alarmOtherScreen()
         }
     }
 }
@@ -787,6 +790,9 @@ function createTranactionData(
                 xkimeresnevid
             );
         }
+        console.log("renderPult yesss!!! 😈")
+        state.pult = [];
+        renderPult();
     }
 }
 
@@ -841,8 +847,8 @@ async function insertForgalomData(
     if (foundKosar.length == 0) {
         foundKosar = false;
     }
-    state.pult = [];
-    renderPult();
+    //BUG:state.pult = [];
+    //BUG: renderPult();
 }
 
 /* TODO:TODO:TODO: KP KIVET TODO:TODO:TODO: */
@@ -887,7 +893,7 @@ function kivetOsszegNumber() {
     osszegKivet = "";
 }
 
-let datumHTML = datum.substring(0, 13);
+let datumHTML = datum.substring(0, 13) + oraPerc;
 document.getElementById("datum").innerHTML = datumHTML;
 
 /* TODO:TODO:TODO: CREATE TR NUMBER TODO:TODO:TODO: */
@@ -1001,93 +1007,93 @@ function keyboardTemplateRender() {
     return `
     <div class="vKeyboard-container d-flex row">
 
-                            <div class=" vKeyboard-letters " id="vKeyboard-letters">
-                                <div class="row vKeyboardRow vKeyboard-offsetRow1 justify-content-center m-1">
-                                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                id="keyboard-Q" value="Q">Q</button>
-                                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                id="keyboard-W" value="W">W</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-E" value="E">E</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-R" value="R">R</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-T" value="T">T</button>
-                                        <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-Z" value="Z">Z</button>
-                                    
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-U" value="U">U</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-I" value="I">I</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-O" value="O">O</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-P" value="P">P</button>
-                                </div>
-                                <div class="row vKeyboardRow vKeyboard-offsetRow2 justify-content-center">
-                                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-A" value="A">A</button>
-                                    
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-S" value="S">S</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-D" value="D">D</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-F" value="F">F</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-G" value="G">G</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-H" value="H">H</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-J" value="J">J</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-K" value="K">K</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-L" value="L">L</button>
-                                    
-                                </div>
-                                <div class="row vKeyboardRow vKeyboard-offsetRow3 justify-content-center">
-                                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-Y" value="Y">Y</button>
-                                    
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-X" value="X">X</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-C" value="C">C</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-V" value="V">V</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-B" value="B">B</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-N" value="N">N</button>
-                                        <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
-                                        id="keyboard-M" value="M">M</button>
-                                    <span class="vKeyboard-spacer"></span>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-symbol m-1"
-                                        id="keyboard-tiret" value="-">-</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-symbol m-1"
-                                        id="keyboard-underscore" value="_">_</button>
-                                    <button type="button col" class="btn keyboard btn-primary vKeyboard-symbol m-1"
-                                        id="keyboard-@" value="@">@</button>
-                                </div>
-                                <div class="row vKeyboardRow justify-content-center">
-                                    
-                                    <button type="button col"
-                                        class="btn keyboard btn-primary vKeyboard-symbol vKeyboard-space"
-                                        id="keyboard-space" value=".">
-                                        <span class="vKeyboard-space-character">┗━━━━━━━━━━━┛</span>
-                                    </button>
-                                    <button type="button col" class="btn keyboard btn-danger vKeyboard-symbol ml-3"
-                                    id="keyboard-torol>" value="">⌫</button>
-                                </div>
-                            </div>
+        <div class=" vKeyboard-letters " id="vKeyboard-letters">
+            <div class="row vKeyboardRow vKeyboard-offsetRow1 justify-content-center m-1">
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-Q" value="Q">Q</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-W" value="W">W</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-E" value="E">E</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-R" value="R">R</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-T" value="T">T</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-Z" value="Z">Z</button>
 
-                        </div>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-U" value="U">U</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-I" value="I">I</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-O" value="O">O</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-P" value="P">P</button>
+            </div>
+            <div class="row vKeyboardRow vKeyboard-offsetRow2 justify-content-center">
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-A" value="A">A</button>
+
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-S" value="S">S</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-D" value="D">D</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-F" value="F">F</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-G" value="G">G</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-H" value="H">H</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-J" value="J">J</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-K" value="K">K</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-L" value="L">L</button>
+
+            </div>
+            <div class="row vKeyboardRow vKeyboard-offsetRow3 justify-content-center">
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-Y" value="Y">Y</button>
+
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-X" value="X">X</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-C" value="C">C</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-V" value="V">V</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-B" value="B">B</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-N" value="N">N</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-letter m-1"
+                    id="keyboard-M" value="M">M</button>
+                <span class="vKeyboard-spacer"></span>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-symbol m-1"
+                    id="keyboard-tiret" value="-">-</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-symbol m-1"
+                    id="keyboard-underscore" value="_">_</button>
+                <button type="button col" class="btn keyboard btn-primary vKeyboard-symbol m-1"
+                    id="keyboard-@" value="@">@</button>
+            </div>
+            <div class="row vKeyboardRow justify-content-center">
+
+                <button type="button col"
+                    class="btn keyboard btn-primary vKeyboard-symbol vKeyboard-space"
+                    id="keyboard-space" value=".">
+                    <span class="vKeyboard-space-character">┗━━━━━━━━━━━┛</span>
+                </button>
+                <button type="button col" class="btn keyboard btn-danger vKeyboard-symbol ml-3"
+                    id="keyboard-torol>" value="">⌫</button>
+            </div>
+        </div>
+
+    </div>
     `;
 }
 /* <button type="button col" class="btn btn-primary vKeyboard-return vKeyboard-numOk vKeyboard-double ml-3"
-                                    id="keyboard-return" value="t">⌫</button> */
+        id="keyboard-return" value="t">⌫</button> */
 
 /* INFO: másodlagos STATE bekérés INFO: */
 /* TODO:TODO:TODO: RENDER GETDATA TODO:TODO:TODO: */
@@ -1186,13 +1192,13 @@ async function saldoCalculation() {
     let responseKP2DaySUM = 0
     let responseCARDDaySUM = 0
     /* console.log('RESPONSE: KP2------->>', responseKP2)
-    console.log('RESPONSE: KP2------->>', { responseKP2 })
+    console.log('RESPONSE: KP2------->>', {responseKP2})
     console.log('RESPONSE: KP2------->>', responseKP2[0]["SUM(kibeosszeg)"]) */
     responseKP2DaySUM = responseKP2[0]["SUM(kibeosszeg)"]
     //console.log('responseKP2DaySUM: ------->> 😛😛😛', responseKP2DaySUM)
     //-------------------------------------------------
     /* console.log('RESPONSE: CARD------->>', responseCARD)
-    console.log('RESPONSE: CARD------->>', { responseCARD })
+    console.log('RESPONSE: CARD------->>', {responseCARD})
     console.log('RESPONSE: CARD------->>', responseCARD[0]["SUM(kibeosszeg)"]) */
     responseCARDDaySUM = responseCARD[0]["SUM(kibeosszeg)"]
     //console.log('responseCARDDaySUM: ------->> 😛😛😛', responseCARDDaySUM)
@@ -1230,17 +1236,17 @@ $("#other").on("click", () => {
     massage = `
     <label for="other1">Kávégép számlálóállása: (${state.otherlist[0].dataValue
         })</label > <br>
-    <input type="number" id="adat1" name="other1"><br>
-        <label for="other2">Játékgépek számlálóállása: (${state.otherlist[1].dataValue
+        <input type="number" id="adat1" name="other1"><br>
+            <label for="other2">Játékgépek számlálóállása: (${state.otherlist[1].dataValue
         })</label><br>
-            <input type="number" id="adat2" name="other2"><br>
-                <label for="other3">Csocsó számláló: (${state.otherlist[2].dataValue
+                <input type="number" id="adat2" name="other2"><br>
+                    <label for="other3">Csocsó számláló: (${state.otherlist[2].dataValue
         })</label><br>
-                    <input type="number" id="adat3" name="other3"><br>
-                        <label for="other4">Biliárd: (${state.otherlist[3].dataValue
+                        <input type="number" id="adat3" name="other3"><br>
+                            <label for="other4">Biliárd: (${state.otherlist[3].dataValue
         })</label><br>
-                            <input type="number" id="adat4" name="other4"><br>
-                                `
+                                <input type="number" id="adat4" name="other4"><br>
+                                    `
     alertDialog(datumNow, massage)
     $("#sendData").off("click");
     $("#sendData").on("click", () => {
@@ -1280,6 +1286,17 @@ $("#other").on("click", () => {
         }
     })
 })
+
+async function alarmOtherScreen() {
+    //let responseKP2 = await fetch("/gettransactionssaldo")
+    //responseKP2 = await responseKP2.json()
+    //let responseKP2DaySUM = responseKP2[0]["SUM(kibeosszeg)"]
+    //console.log('responseKP2DaySUM: ------->> 😛😛😛', responseKP2DaySUM)
+    $("#alarmOtherScreenModal").modal("show");
+    //document.getElementById('responseKP2DaySUMvalue').innerHTML = responseKP2DaySUM + '.- Ft'
+    setTimeout(() => { $("#alarmOtherScreenModal").modal("hide") }, 4000)
+}
+
 /* 
 $(".hitelListRendez").off("click");
 

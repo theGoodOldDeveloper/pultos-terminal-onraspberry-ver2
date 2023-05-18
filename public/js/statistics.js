@@ -666,7 +666,7 @@ function renderPultosokOnOff() {
         origFullWorkTimeHTML += `<tr><td>${index}</td><td>${state.pultosokPSW[index].name}</td><td>${parseInt(origFullWorkTime[index])}</td><td>${month[currentMonth]}</td></tr>`
     }
     document.getElementById('pultosOnOffRow').innerHTML = pultosokOnOfflHTML
-    document.getElementById('fullWorkTimeRow').innerHTML = origFullWorkTimeHTML
+    // BUG: - document.getElementById('fullWorkTimeRow').innerHTML = origFullWorkTimeHTML
 
 
     startTime = 0
@@ -775,7 +775,7 @@ function renderPultosokOnOff() {
         origFullBeforeWorkTimeHTML += `<tr><td>${index}</td><td>${state.pultosokPSW[index].name}</td><td>${parseInt(origBeforeFullWorkTime[index])}</td><td>${month[beforeMonth]}</td></tr>`
     }
     document.getElementById('pultosBeforeOnOffRow').innerHTML = pultosokBeforeOnOfflHTML
-    document.getElementById('fullBeforeWorkTimeRow').innerHTML = origFullBeforeWorkTimeHTML
+    //BUG: - document.getElementById('fullBeforeWorkTimeRow').innerHTML = origFullBeforeWorkTimeHTML
 
     //INFO:INFO:INFO:INFO:INFO:INFO:
     //NOTE:NOTE:NOTE: pultos beveetel
