@@ -36,23 +36,21 @@ const state = {
   pultosokPSW: [],
   forgalom: [],
   sum: [],
-  kosarak: [],
-  kosarNevek: [],
 };
 const sevenDay = 70 * 24 * 60 * 60 * 1000;
 const timePlus = 6 * 60 * 60 * 1000 + 45 * 60 * 1000;
 var startFilterDate = "";
 var endFilterDate = "2099. 12. 31.";
 var datum = new Date();
-// BUG:BUG:BUG: VERSION-2: BUG:BUG:BUG:
+// BUG:BUG:BUG: INFO: BUG:BUG:BUG:
 //var statisticDatum = new Date();
-// BUG:BUG:BUG: VERSION-2: BUG:BUG:BUG:
+// BUG:BUG:BUG: INFO: BUG:BUG:BUG:
 var currentDay = datum.getDate();
 var currentWeek = datum.getWeek();
 var currentMonth = datum.getMonth();
 var currentYear = datum.getFullYear();
 
-/* console.log(
+console.log(
   "nap",
   currentDay,
   "het",
@@ -61,7 +59,7 @@ var currentYear = datum.getFullYear();
   currentMonth,
   "ev",
   currentYear
-); */
+);
 
 var beforeMonth = datum.getMonth() == 0 ? 11 : datum.getMonth() - 1;
 var beforeYear =
@@ -126,12 +124,29 @@ var origBeforeFullWorkTime = [];
 var origFullBeforeWorkTimeHTML = "";
 getdata();
 async function getdata() {
+  //var response = await fetch("/datareadtransactions");
   var response = await fetch("/datareadtransactionssevenday");
   state.transactions = await response.json();
-
-  //HACK:                                          new forgalom OK
   var response = await fetch("/datareadforgalomsevenday");
   state.forgalom = await response.json();
+  //NOTE: update
+  /* console.log(state.transactions);
+  let datum = "2024. 02. 28. 15:10:20";
+  console.log(datum);
+  console.log(Date.parse(datum));
+  let temDate = 1709129420000;
+  let newDate = new Date(temDate);
+  console.log(newDate); */
+  //NOTE: update
+
+  //HACK: new forgalom OK
+  //localStorage.setItem("state.forgalom", JSON.stringify(state.forgalom));
+  /* localStorage.setItem(
+    "state.transactions",
+    JSON.stringify(state.transactions)
+  ); */
+  //console.log("state.forgalom: ", state.forgalom);
+  //console.log("state.transactions: ", state.transactions);
 
   state.sum = state.forgalom.map((tetel) => {
     const tranzakcio = state.transactions.find(
@@ -139,202 +154,171 @@ async function getdata() {
     );
     return { ...tetel, ...tranzakcio };
   });
-  /* console.log(state.sum); */
-  /* localStorage.setItem("state.sum", JSON.stringify(state.sum)); */
-  //HACK:                                            new forgalom OK
-  getDataKosarak();
-  getDataKosarNevek();
-  async function getDataKosarak() {
-    try {
-      const response = await fetch("/getStoreDataKosarak");
 
-      if (response.ok) {
-        state.kosarak = await response.json();
-        /* renderTable(state.kosarak); */
-        /* console.log(state.kosarak); */
-      } else {
-        console.error("Failed to get state.kosarak");
-      }
-    } catch (error) {
-      console.error("Error:", error);
+  console.log(state.sum);
+  localStorage.setItem("state.sum", JSON.stringify(state.sum));
+
+  /* console.log("forgalom", state.forgalom);
+console.log("transactions-tranaction", state.forgalom[3].transaction_id);
+console.log("transactions", state.transactions); */
+  /* console.log("osszetevok", state.osszetevok);
+console.log("termekek", state.termekek);
+console.log("alapanyagok", state.alapanyagok); */
+  /* for (let forg of state.forgalom) {
+  for (let transactions of state.transactions) {
+    if (forg.transaction_id == transactions.id) {
+      console.log(
+        "forg.id: 😈 ",
+        forg.id,
+        "transactions.id: 😈 ",
+        transactions.id,
+        "transactions.pultos: 😈 ",
+        transactions.pultos
+      );
     }
   }
-  async function getDataKosarNevek() {
-    try {
-      const response = await fetch("/getStoreDataKosarNevek");
+} */
+  //HACK: new forgalom OK
 
-      if (response.ok) {
-        state.kosarNevek = await response.json();
-        /* renderTable(state.kosarak); */
-        /* console.log(state.kosarNevek); */
-      } else {
-        console.error("Failed to get state.kosarak");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-    // BUG:BUG:BUG:                            VERSION-2: BUG:BUG:BUG:
-    var kosarSorokHTML = "";
-    /* console.log("haaaaaalikoooooooooooooooo", state.kosarak.length); */
-    for (let index = 0; index < state.kosarak.length; index++) {
-      kosarSorokHTML += `<button type="button" class="btn btn-info m-2 text-center" id=${index} style="color: black; font-weight: bold;"> ${state.kosarNevek[index].kosarMegnevezes} - ${state.kosarNevek[index].kosarMegnevezesIndex}</button> --> <h5>${state.kosarak[index][0].datum} `;
-      let sumHitel = 0;
-      for (hitelItem of state.kosarak[index]) {
-        sumHitel += hitelItem.db * hitelItem.eladottelar;
-      }
-      kosarSorokHTML += `Hitlösszeg: ${sumHitel}</h5><br>`;
-
-      document.getElementById("hitel").innerHTML = kosarSorokHTML;
-    }
-    // BUG:BUG:BUG:                            VERSION-2: BUG:BUG:BUG:
-  }
-
-  //HACK:                                            new forgalom OK
   var response = await fetch("/pultosokadminpsw");
   state.pultosokPSW = await response.json();
   IntervalTransactionstions();
   renderPultosokOnOff();
 }
 
-// BUG:BUG:BUG:                            VERSION-2: BUG:BUG:BUG:
-// BUG:BUG:BUG:                            VERSION-2: BUG:BUG:BUG:
 function IntervalTransactionstions() {
-  for (let transaction of state.sum) {
-    let statisticDatum = new Date();
-    let beforeStatisticDatum = new Date();
-    //BUG
-    let currentDate = statisticDatum.getTime();
-    let beforeCurrentDate = statisticDatum.getTime() - 24 * 60 * 60 * 1000;
+  //ezresCsoportosit();
+  //HACK:                                                        new forgalom OK
 
-    statisticDatum.setTime(currentDate); //BUG: mai napi
-    beforeStatisticDatum.setTime(beforeCurrentDate); //BUG: elozo napi
+  const transactions = state.sum;
 
-    currentMonth = statisticDatum.getMonth();
-    currentMonthBefore = beforeStatisticDatum.getMonth();
+  // Beállítjuk a dátumformátumot
+  const dateFormat = "YYYY. MM. DD.";
 
-    currentYear = statisticDatum.getFullYear();
-    currentYearBefore = beforeStatisticDatum.getFullYear();
+  // Dátum tartományok definiálása
+  const today = moment().format(dateFormat);
+  const yesterday = moment().subtract(1, "days").format(dateFormat);
+  const weekStart = moment().startOf("week").format(dateFormat);
+  const weekEnd = moment().endOf("week").format(dateFormat);
+  const monthStart = moment().startOf("month").format(dateFormat);
+  const monthEnd = moment().endOf("month").format(dateFormat);
+  const previousMonthStart = moment()
+    .subtract(1, "months")
+    .startOf("month")
+    .format(dateFormat);
+  const previousMonthEnd = moment()
+    .subtract(1, "months")
+    .endOf("month")
+    .format(dateFormat);
 
-    let newStatisticDay = statisticDatum.getDate();
-    let beforNewStatisticDay = beforeStatisticDatum.getDate();
-    console.log(newStatisticDay);
-    console.log(beforNewStatisticDay);
+  // Összesítő objektumok definiálása
+  const dailySummary = { c: 0, k: 0, m: 0, total: 0, beszar: 0, profit: 0 };
+  const weeklySummary = { ...dailySummary };
+  const monthlySummary = { ...dailySummary };
+  const previousMonthlySummary = { ...dailySummary };
 
-    //BUG
-    if (
-      new Date(Date.parse(transaction.trdate) - timePlus).getDate() ==
-        beforNewStatisticDay &&
-      new Date(Date.parse(transaction.trdate) - timePlus).getMonth() ==
-        currentMonthBefore &&
-      new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() ==
-        currentYearBefore
-    ) {
-      if (transaction.trfizetesmod == "k") {
-        napiKp1 += transaction.db * transaction.eladottelar;
-        napiHaszon += transaction.db * transaction.eladottbeszar;
-      }
-      if (transaction.trfizetesmod == "m") {
-        napiKp2 += transaction.db * transaction.eladottelar;
-        napiHaszon += transaction.db * transaction.eladottbeszar;
-      }
-      if (transaction.trfizetesmod == "c") {
-        napiCard += transaction.db * transaction.eladottelar;
-        napiHaszon += transaction.db * transaction.eladottbeszar;
-      }
-      if (transaction.trfizetesmod == "b") {
-        napiKivet += transaction.db * transaction.eladottelar;
-      }
-    }
-    if (
-      new Date(Date.parse(transaction.trdate) - timePlus).getWeek() ==
-        currentWeek &&
-      new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() ==
-        currentYear
-    ) {
-      if (transaction.trfizetesmod == "k") {
-        hetiKp1 += transaction.db * transaction.eladottelar;
-        hetiHaszon += transaction.db * transaction.eladottbeszar;
-      }
-      if (transaction.trfizetesmod == "m") {
-        hetiKp2 += transaction.db * transaction.eladottelar;
-        hetiHaszon += transaction.db * transaction.eladottbeszar;
-      }
-      if (transaction.trfizetesmod == "c") {
-        hetiCard += transaction.db * transaction.eladottelar;
-        hetiHaszon += transaction.db * transaction.eladottbeszar;
-      }
-      if (transaction.trfizetesmod == "b") {
-        hetiKivet += transaction.db * transaction.eladottelar;
-      }
+  // Összesítések kiszámítása
+  transactions.forEach((transaction) => {
+    const date = moment(transaction.eladottdate).format(dateFormat);
+
+    // Napi összesítés
+    if (date === today) {
+      dailySummary[transaction.trfizetesmod] += transaction.db;
+      dailySummary.total += transaction.db * transaction.eladottelar;
+      dailySummary.beszar += transaction.db * transaction.eladottbeszar;
+      dailySummary.profit +=
+        transaction.db * transaction.eladottelar -
+        transaction.db * transaction.eladottbeszar;
     }
 
-    if (
-      new Date(Date.parse(transaction.trdate) - timePlus).getMonth() ==
-        currentMonth &&
-      new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() ==
-        currentYear
-    ) {
-      if (transaction.trfizetesmod == "k") {
-        haviKp1 += transaction.db * transaction.eladottelar;
-        haviHaszon += transaction.db * transaction.eladottbeszar;
-        pultosHaviMindosszesen[transaction.pultos] +=
-          transaction.db * transaction.eladottelar;
-      }
-      if (transaction.trfizetesmod == "m") {
-        haviKp2 += transaction.db * transaction.eladottelar;
-        haviHaszon += transaction.db * transaction.eladottbeszar;
-        pultosHaviMindosszesen[transaction.pultos] +=
-          transaction.db * transaction.eladottelar;
-      }
-      if (transaction.trfizetesmod == "c") {
-        haviCard += transaction.db * transaction.eladottelar;
-        haviHaszon += transaction.db * transaction.eladottbeszar;
-        pultosHaviMindosszesen[transaction.pultos] +=
-          transaction.db * transaction.eladottelar;
-      }
-      if (transaction.trfizetesmod == "b") {
-        haviKivet += transaction.db * transaction.eladottelar;
-      }
+    // Heti összesítés
+    if (date >= weekStart && date <= weekEnd) {
+      weeklySummary[transaction.trfizetesmod] += transaction.db;
+      weeklySummary.total += transaction.db * transaction.eladottelar;
+      weeklySummary.beszar += transaction.db * transaction.eladottbeszar;
+      weeklySummary.profit +=
+        transaction.db * transaction.eladottelar -
+        transaction.db * transaction.eladottbeszar;
     }
 
-    if (
-      new Date(Date.parse(transaction.trdate) - timePlus).getMonth() ==
-        beforeMonth &&
-      new Date(Date.parse(transaction.trdate) - timePlus).getFullYear() ==
-        beforeYear
-    ) {
-      if (transaction.trfizetesmod == "k") {
-        elozoHaviKp1 += transaction.db * transaction.eladottelar;
-        elozoHaviHaszon += transaction.db * transaction.eladottbeszar;
-        pultosElozoHaviMindosszesen[transaction.pultos] +=
-          transaction.db * transaction.eladottelar;
-      }
-      if (transaction.trfizetesmod == "m") {
-        elozoHaviKp2 += transaction.db * transaction.eladottelar;
-        elozoHaviHaszon += transaction.db * transaction.eladottbeszar;
-        pultosElozoHaviMindosszesen[transaction.pultos] +=
-          transaction.db * transaction.eladottelar;
-      }
-      if (transaction.trfizetesmod == "c") {
-        elozoHaviCard += transaction.db * transaction.eladottelar;
-        elozoHaviHaszon += transaction.db * transaction.eladottbeszar;
-        pultosElozoHaviMindosszesen[transaction.pultos] +=
-          transaction.db * transaction.eladottelar;
-      }
-      if (transaction.trfizetesmod == "b") {
-        elozoHaviKivet += transaction.db * transaction.eladottelar;
-      }
+    // Havi összesítés
+    if (date >= monthStart && date <= monthEnd) {
+      monthlySummary[transaction.trfizetesmod] += transaction.db;
+      monthlySummary.total += transaction.db * transaction.eladottelar;
+      monthlySummary.beszar += transaction.db * transaction.eladottbeszar;
+      monthlySummary.profit +=
+        transaction.db * transaction.eladottelar -
+        transaction.db * transaction.eladottbeszar;
     }
-  }
-  ezresCsoportosit();
 
-  transactionsHTML += `<tr><td class = "font-weight-bold">ELŐZŐ NAPI</td><td class = "text-right">${napiKp1}</td><td class = "text-right">${napiKp2}</td><td class = "text-right">${napiCard}</td><td class = "text-right">${napiMindosszesen}</td><td class = "text-right">${napiKivet}</td><td class = "text-right">${c}</td><td class = "text-right">${napiZseb}</td></tr>
+    // Előző havi összesítés
+    if (date >= previousMonthStart && date <= previousMonthEnd) {
+      previousMonthlySummary[transaction.trfizetesmod] += transaction.db;
+      previousMonthlySummary.total += transaction.db * transaction.eladottelar;
+      previousMonthlySummary.beszar +=
+        transaction.db * transaction.eladottbeszar;
+      previousMonthlySummary.profit +=
+        transaction.db * transaction.eladottelar -
+        transaction.db * transaction.eladottbeszar;
+    }
+  });
 
-    <tr><td>Heti</td><td class = "text-right">${hetiKp1}</td><td class = "text-right">${hetiKp2}</td><td class = "text-right">${hetiCard}</td><td class = "text-right">${hetiMindosszesen}</td><td class = "text-right">${hetiKivet}</td><td class = "text-right">${hetiNetto}</td><td class = "text-right">${hetiZseb}</td></tr>
+  // HTML template literál
+  const transactionsHTML = `
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Összesítés</th>
+          <th>C</th>
+          <th>K</th>
+          <th>M</th>
+          <th>Összeg</th>
+          <th>Beszerzési ár</th>
+          <th>Profit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Naponta</td>
+          <td><span class="math-inline">\{dailySummary\.c\}</td\>
+  <td\></span>{dailySummary.k}</td>
+          <td><span class="math-inline">\{dailySummary\.m\}</td\>
+  <td\></span>{dailySummary.total}</td>
+          <td><span class="math-inline">\{dailySummary\.beszar\}</td\>
+  <td\></span>{dailySummary.profit}</td>
+        </tr>
+        <tr>
+          <td>Heti</td>
+          <td><span class="math-inline">\{weeklySummary\.c\}</td\>
+  <td\></span>{weeklySummary.k}</td>
+          <td><span class="math-inline">\{weeklySummary\.m\}</td\>
+  <td\></span>{weeklySummary.total}</td>
+          <td><span class="math-inline">\{weeklySummary\.beszar\}</td\>
+  <td\></span>{weeklySummary.profit}</td>
+        </tr>
+        <tr>
+          <td>Havi</td>
+          <td>${monthlySummary.c}</td>
+          <td>${monthlySummary.k}</td>
+          <td>${monthlySummary.m}</td>
+          <td>${monthlySummary.total}</td>
+          <td>${monthlySummary.beszar}</td>
+          <td>${monthlySummary.profit}</td>
+        </tr>
+        <tr>
+          <td>Előzó havi</td>
+          <td>${previousMonthlySummary.c}</td>
+          <td>${previousMonthlySummary.k}</td>
+          <td>${previousMonthlySummary.m}</td>
+          <td>${previousMonthlySummary.total}</td>
+          <td>${previousMonthlySummary.beszar}</td>
+          <td>${previousMonthlySummary.profit}</td>
+        </tr>
+      </tbody>
+    </table>
+  `;
 
-    <tr><td>Havi</td><td class = "text-right">${haviKp1}</td><td class = "text-right">${haviKp2}</td><td class = "text-right">${haviCard}</td><td class = "text-right">${haviMindosszesen}</td><td class = "text-right">${haviKivet}</td><td class = "text-right">${haviNetto}</td><td class = "text-right">${haviZseb}</td></tr>
-
-    <tr><td>Előző havi</td><td class = "text-right">${elozoHaviKp1}</td><td class = "text-right">${elozoHaviKp2}</td><td class = "text-right">${elozoHaviCard}</td><td class = "text-right">${elozoHaviMindosszesen}</td><td class = "text-right">${elozoHaviKivet}</td><td class = "text-right">${elozoHaviNetto}</td><td class = "text-right">${elozoHaviZseb}</td></tr>`;
+  //HACK:                                                        new forgalom OK
 
   document.getElementById("fullStatisticRow").innerHTML = transactionsHTML;
 }
@@ -359,7 +343,7 @@ function createTrNumber() {
   return trNumber;
 }
 function ezresCsoportosit() {
-  //VERSION-2: NAPI
+  //INFO: NAPI
   napiMindosszesen = (napiKp1 + napiKp2 + napiCard).toLocaleString("hu-HU", {
     maximumFractionDigits: 0,
   });
@@ -384,7 +368,7 @@ function ezresCsoportosit() {
   napiKivet = napiKivet.toLocaleString("hu-HU", {
     maximumFractionDigits: 0,
   });
-  //VERSION-2: HETI
+  //INFO: HETI
   hetiMindosszesen = (hetiKp1 + hetiKp2 + hetiCard).toLocaleString("hu-HU", {
     maximumFractionDigits: 0,
   });
@@ -412,7 +396,7 @@ function ezresCsoportosit() {
   hetiKivet = hetiKivet.toLocaleString("hu-HU", {
     maximumFractionDigits: 0,
   });
-  //VERSION-2: HAVI
+  //INFO: HAVI
   haviMindosszesen = (haviKp1 + haviKp2 + haviCard).toLocaleString("hu-HU", {
     maximumFractionDigits: 0,
   });
@@ -440,7 +424,7 @@ function ezresCsoportosit() {
   haviKivet = haviKivet.toLocaleString("hu-HU", {
     maximumFractionDigits: 0,
   });
-  //VERSION-2: INTERVAL
+  //INFO: INTERVAL
   intervalMindosszesen = (
     intervalKp1 +
     intervalKp2 +
@@ -477,7 +461,7 @@ function ezresCsoportosit() {
     maximumFractionDigits: 0,
   });
 
-  //VERSION-2: ELOZOHAVI
+  //INFO: ELOZOHAVI
   elozoHaviMindosszesen = (
     elozoHaviKp1 +
     elozoHaviKp2 +
@@ -597,11 +581,11 @@ function dateConvertPickerToSQL(convertDatePicker, dateCode) {
       parseInt(tempDateArray[2]) == 31
     ) {
       console.log("😊👌😁", tempDateArray[1]);
-      tempDateArray[2] = 00;
+      tempDateArray[2] = "00";
       /* tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString() */
       if (parseInt(tempDateArray[1]) == 12) {
         tempDateArray[0] = (parseInt(tempDateArray[0]) + 1).toString();
-        tempDateArray[1] = 01;
+        tempDateArray[1] = "01";
         console.log("eeeeeeevvv", tempDateArray[0]);
       } else {
         tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString();
@@ -613,7 +597,7 @@ function dateConvertPickerToSQL(convertDatePicker, dateCode) {
       parseInt(tempDateArray[2]) == 31
     ) {
       console.log("😊👌😁", tempDateArray[1]);
-      tempDateArray[2] = 00;
+      tempDateArray[2] = "00";
       tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString();
     }
     if (
@@ -621,7 +605,7 @@ function dateConvertPickerToSQL(convertDatePicker, dateCode) {
       parseInt(tempDateArray[2]) == 30
     ) {
       console.log("😊👌😁", tempDateArray[1]);
-      tempDateArray[2] = 00;
+      tempDateArray[2] = "00";
       tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString();
     }
     if (
@@ -629,7 +613,7 @@ function dateConvertPickerToSQL(convertDatePicker, dateCode) {
       parseInt(tempDateArray[2]) == 28
     ) {
       //console.log('😊👌😁', tempDateArray[1])
-      tempDateArray[2] = 00;
+      tempDateArray[2] = "00";
       tempDateArray[1] = (parseInt(tempDateArray[1]) + 1).toString();
     }
 
@@ -637,10 +621,18 @@ function dateConvertPickerToSQL(convertDatePicker, dateCode) {
       parseInt(tempDateArray[2]) + 1
     ).toString()}. 6:45:00`;
   }
+  //INFO:TODO:INFO:
+  //console.log(convertDatePicker, dateCode)
+
+  //INFO:TODO:INFO:
   return convertDateSQL;
 }
 
 function renderIntervalTransactions() {
+  //INFO:TODO:INFO:
+  //console.log('startFilterDate', startFilterDate)
+  //console.log('endFilterDate', endFilterDate)
+  // INFO: TODO: INFO:
   getTransactionItervallum();
   async function getTransactionItervallum() {
     let sendStartFilterDate = convertDatum(startFilterDate);
@@ -671,15 +663,15 @@ function renderIntervalTransactions() {
       ) {
         if (transaction.trfizetesmod == "k") {
           intervalKp1 += transaction.kibeosszeg;
-          intervalHaszon += transaction.db * transaction.eladottbeszar;
+          intervalHaszon += transaction.kibeosszegbeszar;
         }
         if (transaction.trfizetesmod == "m") {
           intervalKp2 += transaction.kibeosszeg;
-          intervalHaszon += transaction.db * transaction.eladottbeszar;
+          intervalHaszon += transaction.kibeosszegbeszar;
         }
         if (transaction.trfizetesmod == "c") {
           intervalCard += transaction.kibeosszeg;
-          intervalHaszon += transaction.db * transaction.eladottbeszar;
+          intervalHaszon += transaction.kibeosszegbeszar;
         }
         if (transaction.trfizetesmod == "b") {
           intervalKivet += transaction.kibeosszeg;
@@ -688,7 +680,7 @@ function renderIntervalTransactions() {
     }
     ezresCsoportosit();
     intervalHTML += `<tr><td>Intervallum</td><td>${intervalKp1}</td><td>${intervalKp2}</td><td>${intervalCard}</td><td>${intervalMindosszesen}</td><td>${intervalKivet}</td><td>${intervalNetto}</td><td>${intervalZseb}</td></tr>`;
-    /* document.getElementById("intervalStatisticRow").innerHTML = intervalHTML; */
+    document.getElementById("intervalStatisticRow").innerHTML = intervalHTML;
     intervalHTML = "";
   }
 }
@@ -718,19 +710,19 @@ function renderPultosokOnOff() {
         transaction.trfizetesmod == "o"
       ) {
         //startTime = new Date(transaction.trdate).getTime()
-        //VERSION-2:VERSION-2:BUG:VERSION-2:VERSION-2:
+        //INFO:INFO:BUG:INFO:INFO:
         startTime = new Date(transaction.trdate).setHours(7);
         startTime = new Date(startTime).setMinutes(0);
         startTime = new Date(startTime).setSeconds(0);
         /* console.log(new Date(startTime))
                 console.log(startTime) */
         startTimeDate = new Date(startTime).toLocaleString();
-        //VERSION-2:VERSION-2:BUG:VERSION-2:VERSION-2:
+        //INFO:INFO:BUG:INFO:INFO:
         pultosokOnOfflHTML += `<tr><td>${transaction.pultos}</td><td>${
           state.pultosokPSW[transaction.pultos].name
         }</td><td class="bg-success text-white">${startTimeDate}</td><td class="bg-success text-white">on</td></tr>
             `;
-        ////VERSION-2:
+        ////INFO:
         pultosDay = new Date(transaction.trdate).getDate();
         dayWork[pultosDay] = transaction.pultos;
       }
@@ -740,6 +732,8 @@ function renderPultosokOnOff() {
       ) {
         endTime = new Date(transaction.trdate).getTime();
         workTime = parseInt((endTime - startTime) / 1000 / 60);
+
+        //console.log(endTime)
         pultosokOnOfflHTML += `<tr><td>${transaction.pultos}</td><td >${
           state.pultosokPSW[transaction.pultos].name
         }</td><td class="bg-danger text-white">off</td><td class="bg-danger text-white">${
@@ -747,13 +741,14 @@ function renderPultosokOnOff() {
         }</td></tr>
             `;
         //origFullWorkTime[transaction.pultos] += workTime
-        ////VERSION-2:
+        ////INFO:
         pultosDay = new Date(transaction.trdate).getDate();
         dayWork[pultosDay] = transaction.pultos;
         dayTimeWork[pultosDay] = workTime;
       }
     }
   }
+
   let pultos = -1;
   let naptariNap = -1;
   for (pultos = 0; pultos < 4; pultos++) {
@@ -807,14 +802,14 @@ function renderPultosokOnOff() {
         transaction.trfizetesmod == "o"
       ) {
         startTimeOriginal = new Date(transaction.trdate).toLocaleString();
-        //VERSION-2:VERSION-2:BUG:VERSION-2:VERSION-2:
+        //INFO:INFO:BUG:INFO:INFO:
         startTime = new Date(transaction.trdate).setHours(7);
         startTime = new Date(startTime).setMinutes(0);
         startTime = new Date(startTime).setSeconds(0);
         /* console.log(new Date(startTime))
                 console.log(startTime) */
         startTimeDate = new Date(startTime).toLocaleString();
-        //VERSION-2:VERSION-2:BUG:VERSION-2:VERSION-2:
+        //INFO:INFO:BUG:INFO:INFO:
         pultosokBeforeOnOfflHTML += `<tr>
                 <td>${transaction.pultos}</td>
                 <td>${state.pultosokPSW[transaction.pultos].name}</td>
@@ -831,6 +826,7 @@ function renderPultosokOnOff() {
       ) {
         endTime = new Date(transaction.trdate).getTime();
         workTime = parseInt((endTime - startTime) / 1000 / 60);
+
         pultosokBeforeOnOfflHTML += `<tr>
                 <td>${transaction.pultos}</td>
                 <td>${state.pultosokPSW[transaction.pultos].name}</td>
@@ -838,8 +834,11 @@ function renderPultosokOnOff() {
                 <td class="bg-danger text-white">off</td>
                 <td>${transaction.trdate}</td></tr>
             `;
+        //beforeFullWorkTime[transaction.pultos] += workTime
+        //pultosDay = new Date(transaction.trdate).getDate()
         beforeDayWork[pultosDay] = transaction.pultos;
         beforeDayTimeWork[pultosDay] = workTime;
+        //beforeDayTimeWork[pultosDay] = workTime == '' ? 0 : workTime
       }
     }
   }
@@ -855,6 +854,8 @@ function renderPultosokOnOff() {
       }
     }
   }
+
+  //console.log(testsumma / 60)
 
   for (index = 0; index < beforeDayWork.length; index++) {
     beforeFullWorkTime[beforeDayWork[index]] = 0;
@@ -999,5 +1000,7 @@ function convertDatum(cdatum) {
   nap = nap < 10 ? "0" + nap : nap;
 
   let cNap = `${ev}. ${honap}. ${nap}.`;
+  //console.log(maiNap)
   return cNap;
+  //var endFilterDate = "2099. 12. 31.";
 }
